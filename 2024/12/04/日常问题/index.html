@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="sanyiba">
+    
+    <meta name="author" content="你的情书">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://his-smile.github.io/2024/12/04/日常问题/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="使用流来请求并且接收api通过流来请求url路径并且获取数据 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455&#x2F;&#x2F;组装的数据String s &#x3D; JsonUtil.objectToString(req);&#x2F;&#x2F;                 s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="His-Smile">
+<meta property="og:url" content="https://his-smile.github.io/2024/12/04/%E6%97%A5%E5%B8%B8%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="His-Smile">
+<meta property="og:description" content="使用流来请求并且接收api通过流来请求url路径并且获取数据 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455&#x2F;&#x2F;组装的数据String s &#x3D; JsonUtil.objectToString(req);&#x2F;&#x2F;                 s">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://his-smile.github.io/assets/1732959155321.png">
+<meta property="og:image" content="https://his-smile.github.io/assets/1732959163232.png">
+<meta property="og:image" content="https://his-smile.github.io/assets/1734332220278.png">
+<meta property="og:image" content="https://his-smile.github.io/assets/1733471026050.png">
+<meta property="og:image" content="https://his-smile.github.io/assets/1733712627384.png">
+<meta property="og:image" content="https://his-smile.github.io/assets/1733712817051.png">
+<meta property="og:image" content="https://his-smile.github.io/assets/1733714267353.png">
+<meta property="og:image" content="https://his-smile.github.io/assets/1734399624717.png">
+<meta property="og:image" content="https://his-smile.github.io/assets/1734399642044.png">
+<meta property="og:image" content="https://his-smile.github.io/assets/1734316127427.png">
+<meta property="og:image" content="https://his-smile.github.io/assets/1734316141938.png">
+<meta property="og:image" content="https://his-smile.github.io/assets/1734316168813.png">
+<meta property="og:image" content="https://his-smile.github.io/assets/1734326915273.png">
+<meta property="og:image" content="https://his-smile.github.io/assets/1734334939877.png">
+<meta property="og:image" content="https://his-smile.github.io/assets/1734399738570.png">
+<meta property="og:image" content="https://his-smile.github.io/assets/1734399747407.png">
+<meta property="og:image" content="https://his-smile.github.io/assets/1734335310378.png">
+<meta property="og:image" content="https://his-smile.github.io/assets/1734335971868.png">
+<meta property="article:published_time" content="2024-12-04T08:15:31.879Z">
+<meta property="article:modified_time" content="2024-12-17T02:00:48.369Z">
+<meta property="article:author" content="张宇博">
+<meta property="article:tag" content="sanyiba">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://his-smile.github.io/assets/1732959155321.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            His-Smile - 你的情书
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"his-smile.github.io","root":"/","language":"zh-CN","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wall.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"His-Smile","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.7.3","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container flex flex-col justify-between min-h-dvh">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                His-Smile
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">1</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">0</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">4</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3"></h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/sd.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">你的情书</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv1</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-12-04 16:15:31</span>
+        <span class="mobile">2024-12-04 16:15:31</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-12-17 10:48</span>
+            <span class="mobile">2024-12-17 10:48</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h4 id="使用流来请求并且接收api"><a href="#使用流来请求并且接收api" class="headerlink" title="使用流来请求并且接收api"></a>使用流来请求并且接收api</h4><p>通过流来请求url路径并且获取数据</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">//组装的数据</span><br><span class="line">String s = JsonUtil.objectToString(req);</span><br><span class="line">//                 s = URLEncoder.encode(s, &quot;UTF-8&quot;);</span><br><span class="line">//组装链接,用流接受信息</span><br><span class="line">inStream = HttpRUtil.sendBasePost(outqueryUrl+&quot;/outquery/dp/getDamageImagesBase&quot;,s,null);</span><br><span class="line">                 </span><br><span class="line">                 </span><br><span class="line">                 </span><br><span class="line">//发送http请求</span><br><span class="line">public static InputStream sendBasePost(String url, String param, Map&lt;String,String&gt; headers) &#123;</span><br><span class="line">       //获取URLConnection对象对应的输出流</span><br><span class="line">       PrintWriter out = null;</span><br><span class="line">       //获取响应的输入流</span><br><span class="line">        InputStream responseStream = null;</span><br><span class="line">        try &#123;</span><br><span class="line">            URL realUrl = new URL(url);</span><br><span class="line">            // 打开和URL之间的连接</span><br><span class="line">            URLConnection conn = realUrl.openConnection();</span><br><span class="line">            // 设置通用的请求属性</span><br><span class="line">            conn.setRequestProperty(&quot;accept&quot;, &quot;*/*&quot;);</span><br><span class="line">            conn.setRequestProperty(&quot;connection&quot;, &quot;Keep-Alive&quot;);</span><br><span class="line">            conn.setRequestProperty(&quot;user-agent&quot;, &quot;Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)&quot;);</span><br><span class="line">            conn.setRequestProperty(&quot;content-Type&quot;, &quot;application/json; charset=utf-8&quot;);</span><br><span class="line">            if(headers != null &amp;&amp; headers.size() &gt; 0)&#123;</span><br><span class="line">                for (String key : headers.keySet())&#123;</span><br><span class="line">                    conn.setRequestProperty(key, headers.get(key));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            // 发送POST请求必须设置如下两行</span><br><span class="line">            conn.setDoOutput(true);</span><br><span class="line">            conn.setDoInput(true);</span><br><span class="line">            // 设置超时时间</span><br><span class="line">            conn.setConnectTimeout(10000); // 10秒连接</span><br><span class="line">            conn.setReadTimeout(60000); // 60秒读取</span><br><span class="line">            // 获取URLConnection对象对应的输出流</span><br><span class="line">            out = new PrintWriter(conn.getOutputStream());</span><br><span class="line">            // 发送请求参数</span><br><span class="line">            out.print(param);</span><br><span class="line">            // flush输出流的缓冲</span><br><span class="line">            out.flush();</span><br><span class="line">            // 获取响应的输入流</span><br><span class="line">            responseStream = conn.getInputStream();</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            log.error(&quot;发送 POST 请求出现异常！&#123;&#125;&quot;, e);</span><br><span class="line">        &#125;finally&#123;</span><br><span class="line">            try&#123;</span><br><span class="line">                if(out!=null)&#123;</span><br><span class="line">                    out.close();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;catch (Exception e)&#123;</span><br><span class="line">                log.error(&quot;流关闭异常: &#123;&#125;&quot;, e);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return responseStream;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="流操作-构建Map"><a href="#流操作-构建Map" class="headerlink" title="流操作,构建Map&lt;Long,Map&lt;Long,Long&gt;&gt;"></a>流操作,构建Map&lt;Long,Map&lt;Long,Long&gt;&gt;</h4><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;Long, Map&lt;Long, Long&gt;&gt; longMapMap = enquiryIdMap.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, entry -&gt;</span><br><span class="line">       entry.getValue().stream().collect(Collectors.toMap(JcShopEnquiryParts::getDamagePartsId, JcShopEnquiryParts::getEnquiryPartsId))</span><br><span class="line">));</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="事务操作-在一个事务里面执行远程调用服务回调"><a href="#事务操作-在一个事务里面执行远程调用服务回调" class="headerlink" title="事务操作,在一个事务里面执行远程调用服务回调"></a>事务操作,在一个事务里面执行远程调用服务回调</h4><p>通过加入节点的方式也就是rabbitmq,使用封装过的</p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/qq_45990281/article/details/142397092?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_baidulandingword~default-0-142397092-blog-106024311.235%5Ev43%5Epc_blog_bottom_relevance_base3&spm=1001.2101.3001.4242.1&utm_relevant_index=3" >https://blog.csdn.net/qq_45990281/article/details/142397092?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_baidulandingword~default-0-142397092-blog-106024311.235^v43^pc_blog_bottom_relevance_base3&amp;spm=1001.2101.3001.4242.1&amp;utm_relevant_index=3 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/assets/1732959155321.png"
+                      alt="73295914339"
+                ><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/assets/1732959163232.png"
+                      alt="73295916323"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/assets/1734332220278.png"
+                      alt="73433222027"
+                ></p>
+<p>可以用事务同步,在一个事务中如果需要同时查找此事务操作过的数据,可以通过事务同步管理器来进行,此方法可以保证此操作在本始事务提交之后再进行,从而保证了调用别的操作的时候数据已经更新</p>
+<pre><code> // 注册事务同步
+            TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() &#123;
+                @Override
+                public void afterCommit() &#123;
+                    // 事务提交后的回调操作
+                    try &#123;
+                        Res res = damageClient.batchPurchaseIntentOrder(damageVo);
+                        log.info(&quot;已同意,但未生成订单，damageId:&#123;&#125;,议价单ID:&#123;&#125;,结果: &#123;&#125;&quot;,
+                                enquiryVo.getDamageId(), vo.getNegotiateId(), JSONObject.toJSONString(res));
+                    &#125; catch (Exception e) &#123;
+                        log.error(&quot;调用下单服务失败，damageId:&#123;&#125;,议价单ID:&#123;&#125;&quot;, enquiryVo.getDamageId(), vo.getNegotiateId(), e);
+                    &#125;
+                &#125;
+            &#125;);
+</code></pre>
+<p>关于 getPartnum() 方法的返回类型</p>
+<h5 id="转换BigDecimal"><a href="#转换BigDecimal" class="headerlink" title="转换BigDecimal"></a>转换BigDecimal</h5><p>BigDecimal partPrice &#x3D; new BigDecimal(jcShopDamageParts.getPtprice().toString()).multiply(new BigDecimal(jcShopDamageParts.getPartnum()));</p>
+<p>构建BigDecimal 的时候如果是Double转换,有可能会产生精度问题,因此最好转化为String,再转化为BigDecimal,而int这种或者Long,就不会有精度问题,可以直接传给构造BigDecimal的数据类型</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">multiply就是乘的意思,这一句就是将每一个配件的单价乘以他对应的数量算出来总价后相加	</span><br></pre></td></tr></table></figure></div>
+
+<p>返回类型：<br>通常情况下，getPartnum() 方法返回的是一个表示数量的数值类型，可能是 int、long 或 Integer、Long 等。<br>在你的代码中，getPartnum() 的返回值被传递给了 BigDecimal 的构造函数，这表明 getPartnum() 返回的值应该是可以转换为 BigDecimal 的类型。<br>使用 BigDecimal 构造函数：<br>如果 getPartnum() 返回的是 int 或 long，可以直接传递给 BigDecimal 构造函数，不需要转换为 String。<br>如果 getPartnum() 返回的是 Integer 或 Long，也可以直接传递给 BigDecimal 构造函数，因为 BigDecimal 有对应的构造函数支持这些类型。<br>示例代码<br>假设 getPartnum() 返回的是 int 类型：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/assets/1733471026050.png"
+                      alt="73347102605"
+                ></p>
+<h4 id="java虚拟机黑盒"><a href="#java虚拟机黑盒" class="headerlink" title="java虚拟机黑盒"></a>java虚拟机黑盒</h4><p>内部是怎么实现,类装载子系统-&gt;运行时数据区-&gt;字节码执行文件</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/assets/1733712627384.png"
+                      alt="73371262738"
+                ></p>
+<p>栈(线程),内存区域用来放线程运行地址</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/assets/1733712817051.png"
+                      alt="73371281705"
+                ></p>
+<p>从栈里面划一片线程栈内存区,就是每一个线程都会从栈里面划一片内存区域,每一个方法的内存空间是相互隔离的,方法结束就销毁,好管理每一个方法的局部变量,一个方法会对应一个<strong>栈帧内存区域</strong>,数据结构里面有一个栈,先执行完的先出栈,main方法最先进栈,最后出栈</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/assets/1733714267353.png"
+                      alt="73371426735"
+                ></p>
+<p>1.生成唯一标识：生成一个唯一的 uuid 和当前时间 reqDate，并记录日志。<br>2.检查输入参数：如果 damage 对象为 null 或其状态为 “0”，则直接返回。<br>3.获取配件列表：从 damage 对象中获取配件列表 shopDamagePartsList，如果列表为空，则直接返回。<br>组装请求数据：<br>4.创建 RequestBaseToClaimVo 对象 baseInfo，并设置 damageNo。<br>5.遍历配件列表，创建 ResponsePartVo 对象 responsePart，设置配件名称、OE号、类型、数量等信息。<br>6.根据配件的 buyflag 判断是否已确认报价，并设置相应的报价信息和供应商信息。<br>7.发送请求：<br>8.将 baseInfo 转换为 JSON 字符串 requstStr。<br>9.调用 outAppClient.transfer 方法发送请求，并记录日志。<br>10.处理响应：<br>如果响应不为空，解析响应字符串为 Map 对象 resultMap。<br>检查 resultMap 中的 status，根据结果更新 sendVapStatus。<br>更新状态：<br>调用 jcShopDamagePartsDao.updateSendVapStatusByDamageId 方法更新推送状态。<br>记录日志：记录最终的返回信息。</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br></pre></td><td class="code"><pre><span class="line">    @Test</span><br><span class="line">    public void testMethodName() &#123;</span><br><span class="line">        extracted();</span><br><span class="line">        List&lt;Person&gt; personList1 = getPeople();</span><br><span class="line"></span><br><span class="line">//        extracted1();</span><br><span class="line"></span><br><span class="line">//        extracted2(personList1);</span><br><span class="line"></span><br><span class="line">//        extracted3(personList1);</span><br><span class="line"></span><br><span class="line">        List&lt;Integer&gt; list = Arrays.asList(7, 6, 9, 4, 11, 6);</span><br><span class="line"></span><br><span class="line">        // 自然排序</span><br><span class="line">        Optional&lt;Integer&gt; max = list.stream().max(Integer::compareTo);</span><br><span class="line">        // 自定义排序（从大到小排序）</span><br><span class="line">//        Optional&lt;Integer&gt; min = list.stream().max();</span><br><span class="line">//        Optional&lt;Integer&gt; max22 = list.stream().max((o1, o2) -&gt; o2 - o1);</span><br><span class="line">//        Optional&lt;Integer&gt; max2 = list.stream().min((o2, o1) -&gt; o2 - o1);</span><br><span class="line">//        System.out.println(&quot;自然排序的最大值：&quot; + max.get());</span><br><span class="line">//        System.out.println(&quot;自定义排序的最大值：&quot; + max2.get());</span><br><span class="line">//        System.out.println(&quot;自定义排序的22最大值：&quot; + max22.get());</span><br><span class="line">//        System.out.println(&quot;自定义排序的最小值：&quot; + min.get());</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//        Optional&lt;Person&gt; max = personList1.stream().min(Comparator.comparing(Person::getName));</span><br><span class="line">//        System.out.println(&quot;最长的字符串：&quot; + max.get());</span><br><span class="line"></span><br><span class="line">//        Optional&lt;Person&gt; max1 = personList1.stream().max(Comparator.comparing(Person::getSalary));</span><br><span class="line">//        System.out.println(&quot;员工薪资最大值：&quot; + max1.get().getSalary());</span><br><span class="line">//        System.out.println(5500*12);</span><br><span class="line">//        extracted4(personList1);</span><br><span class="line"></span><br><span class="line">//        extracted6();</span><br><span class="line">        List&lt;String&gt; stringList = Arrays.asList(&quot;mu&quot;, &quot;CSDN&quot;, &quot;hello&quot;,</span><br><span class="line">                &quot;world&quot;, &quot;quickly&quot;);</span><br><span class="line">        stringList.stream().mapToInt(String::length).forEach(x -&gt; System.out.print(x+&quot; &quot;));</span><br><span class="line">        // 将int集合的每个元素增加1000</span><br><span class="line">        List&lt;Integer&gt; integerList = Arrays.asList(4, 5, 2, 1, 6, 3);</span><br><span class="line">        integerList.stream().mapToInt(x -&gt; x + 1000).forEach(x -&gt; System.out.print(x+&quot; &quot;));</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private static void extracted6() &#123;</span><br><span class="line">        List&lt;String&gt; lis2t = Arrays.asList(&quot;m-k-l-a&quot;, &quot;1-3-5-7&quot;);</span><br><span class="line">        List&lt;String&gt; collect = lis2t.stream().flatMap(s -&gt; &#123;</span><br><span class="line">            String[] split = s.split(&quot;-&quot;);</span><br><span class="line">            return Arrays.stream(split);</span><br><span class="line">        &#125;).collect(Collectors.toList());</span><br><span class="line">        List&lt;String&gt; listNew = lis2t.stream().flatMap(s -&gt; &#123;</span><br><span class="line">            // 将每个元素转换成一个stream</span><br><span class="line">            String[] split = s.split(&quot;-&quot;);</span><br><span class="line">            Stream&lt;String&gt; s2 = Arrays.stream(split);</span><br><span class="line">            return s2;</span><br><span class="line">        &#125;).collect(Collectors.toList());</span><br><span class="line"></span><br><span class="line">        System.out.println(&quot;处理前的集合：&quot; + lis2t+&quot;-----&quot; +collect);</span><br><span class="line">        System.out.println(&quot;处理后的集合：&quot; + listNew);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private void extracted4(List&lt;Person&gt; personList1) &#123;</span><br><span class="line">        List&lt;Person&gt; collect = personList1.stream().map(person -&gt; &#123;</span><br><span class="line">            Person person1 = new Person(person.getName(), person.getSalary(), person.getAge(), person.getSex(), person.getArea());</span><br><span class="line">            person1.setSalary(person.getSalary() + 10000);</span><br><span class="line">            return person1;</span><br><span class="line">        &#125;).collect(Collectors.toList());</span><br><span class="line">        System.out.println(&quot;一次改动前：&quot; + personList1 + &quot;--&gt;&quot; + personList1.get(0).getSalary());</span><br><span class="line">        System.out.println(&quot;一次改动后：&quot; + collect + &quot;--&gt;&quot; + collect.get(0).getSalary());</span><br><span class="line"></span><br><span class="line">        List&lt;Person&gt; collect2 = personList1.stream().map(person -&gt; &#123;</span><br><span class="line">            person.setSalary(person.getSalary() + 10000);</span><br><span class="line">            return person;</span><br><span class="line">        &#125;).collect(Collectors.toList());</span><br><span class="line">        System.out.println(&quot;一次改动前：&quot; + personList1 + &quot;--&gt;&quot; + personList1.get(0).getSalary());</span><br><span class="line">        System.out.println(&quot;一次改动后：&quot; + collect2 + &quot;--&gt;&quot; + collect2.get(0).getSalary());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private void extracted3(List&lt;Person&gt; personList1) &#123;</span><br><span class="line">        Optional&lt;Person&gt; max = personList1.stream()</span><br><span class="line">                .filter(x -&gt; x.getSalary() &gt; 100000)</span><br><span class="line">                .max(Comparator.comparingInt(Person::getSalary));</span><br><span class="line">        System.out.println(max.orElse(null));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private void extracted2(List&lt;Person&gt; personList1) &#123;</span><br><span class="line">        Map&lt;String, Integer&gt; map =  personList1.stream().filter(x -&gt; x.getSalary() &gt; 8000).collect(Collectors.toMap(Person::getName, Person::getAge));</span><br><span class="line">        System.out.print(&quot;薪资高于8000美元的员工：&quot; + map);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private List&lt;Person&gt; getPeople() &#123;</span><br><span class="line">        List&lt;Person&gt; personList1 = new ArrayList&lt;Person&gt;();</span><br><span class="line">        personList1.add(new Person(&quot;Tom&quot;, 8900, 23, &quot;male&quot;, &quot;New York&quot;));</span><br><span class="line">        personList1.add(new Person(&quot;Jack&quot;, 7000, 25, &quot;male&quot;, &quot;Washington&quot;));</span><br><span class="line">        personList1.add(new Person(&quot;Lily&quot;, 7800, 21, &quot;female&quot;, &quot;Washington&quot;));</span><br><span class="line">        personList1.add(new Person(&quot;Anni&quot;, 8200, 24, &quot;female&quot;, &quot;New York&quot;));</span><br><span class="line">        personList1.add(new Person(&quot;Owen&quot;, 95000, 25, &quot;male&quot;, &quot;New York&quot;));</span><br><span class="line">        personList1.add(new Person(&quot;Alisa&quot;, 79000, 26, &quot;female&quot;, &quot;New York&quot;));</span><br><span class="line">        return personList1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private void extracted() &#123;</span><br><span class="line">        List&lt;Person&gt; personList = new ArrayList&lt;Person&gt;();</span><br><span class="line">        personList.add(new Person(&quot;Tom&quot;, 8900, 18,&quot;male&quot;, &quot;New York&quot;));</span><br><span class="line">        personList.add(new Person(&quot;Jack&quot;, 7000, 20,&quot;male&quot;, &quot;Washington&quot;));</span><br><span class="line">        personList.add(new Person(&quot;Lily&quot;, 7800, 22,&quot;female&quot;, &quot;Washington&quot;));</span><br><span class="line">        personList.add(new Person(&quot;Anni&quot;, 8200, 28,&quot;female&quot;, &quot;New York&quot;));</span><br><span class="line">        personList.add(new Person(&quot;Owen&quot;, 9500, 30,&quot;male&quot;, &quot;New York&quot;));</span><br><span class="line">        personList.add(new Person(&quot;Alisa&quot;, 7900, 40,&quot;female&quot;, &quot;New York&quot;));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private static void extracted1() &#123;</span><br><span class="line">        List&lt;Integer&gt; list = Arrays.asList(7, 6, 9, 3, 8, 2, 1);</span><br><span class="line">        // 遍历输出符合条件的元素</span><br><span class="line">        list.stream().filter(x -&gt; x&gt;6).forEach(System.out::println);</span><br><span class="line">        // 匹配第一个</span><br><span class="line">        Optional&lt;Integer&gt; first = list.stream().filter(x -&gt; x &gt; 8).findFirst();</span><br><span class="line">        // 匹配任意（适用于并行流）</span><br><span class="line">        Optional&lt;Integer&gt; findAny = list.parallelStream().filter(x -&gt; x &gt; 6).findAny();</span><br><span class="line">        // 是否包含符合特定条件的元素</span><br><span class="line">        boolean anyMatch = list.stream().anyMatch(x -&gt; x &gt; 6);</span><br><span class="line">        System.out.println(&quot;匹配第一个值：&quot; + first.get());</span><br><span class="line">        System.out.println(&quot;匹配任意一个值：&quot; + findAny.get());</span><br><span class="line">        System.out.println(&quot;是否存在大于6的值：&quot; + anyMatch);</span><br><span class="line">    &#125;</span><br><span class="line">    @Data</span><br><span class="line">    public class Person &#123;</span><br><span class="line">        private String name;  // 姓名</span><br><span class="line">        private int salary; // 薪资</span><br><span class="line">        private int age; // 年龄</span><br><span class="line">        private String sex; //性别</span><br><span class="line">        private String area;  // 地区</span><br><span class="line"></span><br><span class="line">        // 构造方法</span><br><span class="line">        public Person(String name, int salary, int age,String sex,String area) &#123;</span><br><span class="line">            this.name = name;</span><br><span class="line">            this.salary = salary;</span><br><span class="line">            this.age = age;</span><br><span class="line">            this.sex = sex;</span><br><span class="line">            this.area = area;</span><br><span class="line">        &#125;</span><br><span class="line">        // 省略了get和set，请自行添加</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></div>
+
+
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 查询定损单照片</span><br><span class="line"> * @param registNo</span><br><span class="line"> * @param damageNo</span><br><span class="line"> * @param infoid</span><br><span class="line"> * @param carNo</span><br><span class="line"> * @return</span><br><span class="line"> */</span><br><span class="line">public R getDamagePicture(GetClaimPhotoReqVo vo) &#123;</span><br><span class="line">    Res damagePicture = janpEnquiryInnerClient.getDamagePicture(vo);</span><br><span class="line">    ArrayList date = (ArrayList) damagePicture.getData();</span><br><span class="line">    if(date!=null)&#123;</span><br><span class="line">        if(&quot;200&quot;.equals(damagePicture.getCode()))&#123;</span><br><span class="line">            return R.ok(&quot;成功&quot;,date);</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            return R.error(damagePicture.getMsg());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return R.error();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 查询定损单照片</span><br><span class="line">     * @param registNo</span><br><span class="line">     * @param damageNo</span><br><span class="line">     * @param infoid</span><br><span class="line">     * @param carNo</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    public R getDamagePicture(GetClaimPhotoReqVo vo) &#123;</span><br><span class="line">        Res damagePicture = janpEnquiryInnerClient.getDamagePicture(vo);</span><br><span class="line">        ArrayList date = (ArrayList) damagePicture.getData();</span><br><span class="line">        if(date!=null)&#123;</span><br><span class="line">            if(&quot;200&quot;.equals(damagePicture.getCode()))&#123;</span><br><span class="line">                return R.ok(&quot;成功&quot;,date);</span><br><span class="line">            &#125;else&#123;</span><br><span class="line">                return R.error(damagePicture.getMsg());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return R.error();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    				if(&quot;AIYH&quot;.equals(shopDamage.getChannelSource()) || &quot;24&quot;.equals(shopDamage.getDataSource()))&#123;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h5 id="回退版本"><a href="#回退版本" class="headerlink" title="回退版本"></a>回退版本</h5><p>1.git Reset Current Branch to Here 回退到这个版本,之前的版本都会取消</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/assets/1734399624717.png"
+                      alt="73439962471"
+                ></p>
+<p>2.git Revert 某一个版本撤回,保留之后的版本,生成新的版本</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/assets/1734399642044.png"
+                      alt="73439964204"
+                ></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>工作区</th>
+<th>暂存区</th>
+<th>版本库</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>soft</td>
+<td>不变</td>
+<td>不变</td>
+<td>回退</td>
+</tr>
+<tr>
+<td>maed</td>
+<td>不变</td>
+<td>回退</td>
+<td>回退</td>
+</tr>
+<tr>
+<td>hard</td>
+<td>回退</td>
+<td>回退</td>
+<td>回退</td>
+</tr>
+</tbody></table>
+<p>git reflog 看历史记录,记录前面的id git -&gt;Reset HEAD -&gt;To commit,将id赋值,-&gt;vaildate-&gt;选择Hard-&gt;reset</p>
+<h5 id="撤销修改"><a href="#撤销修改" class="headerlink" title="撤销修改"></a>撤销修改</h5><p>rollback</p>
+<h5 id="搁置当前"><a href="#搁置当前" class="headerlink" title="搁置当前"></a>搁置当前</h5><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/assets/1734316127427.png"
+                      alt="73431612742"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/assets/1734316141938.png"
+                      alt="73431614193"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/assets/1734316168813.png"
+                      alt="73431616881"
+                ></p>
+<p>​	Changes可以修改名字,记录搁置的信息</p>
+<h5 id="删除文件"><a href="#删除文件" class="headerlink" title="删除文件"></a>删除文件</h5><p>用git 删除记录文件</p>
+<h5 id="分支操作"><a href="#分支操作" class="headerlink" title="分支操作"></a>分支操作</h5><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/assets/1734326915273.png"
+                      alt="73432691527"
+                ></p>
+<p>git fetch 和 git pull 前者是更新但是不合并,需要先查看更新 git log -p FETCH_HEAD 然后再git merge origin&#x2F;master ,</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/assets/1734334939877.png"
+                      alt="73433493987"
+                ></p>
+<p>merge用共用分支</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/assets/1734399738570.png"
+                      alt="73439973857"
+                ></p>
+<p>Rebase用于私有分支</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/assets/1734399747407.png"
+                      alt="73439974740"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/assets/1734335310378.png"
+                      alt="73433531037"
+                ></p>
+<p>Undo Commit 撤回,如果没有Push的话, 没有记录\</p>
+<h5 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h5><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/assets/1734335971868.png"
+                      alt="73433597186"
+                ></p>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> </li>
+        <li><strong>作者:</strong> 你的情书</li>
+        <li><strong>创建于
+                :</strong> 2024-12-04 16:15:31</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2024-12-17 10:00:48
+            </li>
+        
+        <li>
+            <strong>链接:</strong> https://redefine.ohevan.com/2024/12/04/日常问题/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
+
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/11/15/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%9C%89%E6%84%9F/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">第一篇博客有感</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        评论
+    </div>
+    
+
+        
+            
+    <div id="waline"></div>
+    <script type="module" data-swup-reload-script>
+      import { init } from '/js/libs/waline.mjs';
+
+      function loadWaline() {
+        init({
+          el: '#waline',
+          serverURL: 'https://example.example.com',
+          lang: 'zh-CN',
+          dark: 'body[class~="dark-mode"]',
+          reaction: false,
+          requiredMeta: ['nick', 'mail'],
+          emoji: [],
+          
+          
+        });
+      }
+
+      if (typeof swup !== 'undefined') {
+        loadWaline();
+      } else {
+        window.addEventListener('DOMContentLoaded', loadWaline);
+      }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">目录</div>
+        <div class="page-title"></div>
+        
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">你的情书</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        共撰写了 4 篇文章
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">访问人数</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">总访问量</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.7.3</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+</body>
+</html>
