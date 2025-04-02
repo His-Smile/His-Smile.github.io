@@ -45,7 +45,7 @@
 <meta property="og:image" content="https://his-smile.github.io/assets/1734335971868.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/His-Smile/pic_bed/img/202412181046717.png">
 <meta property="article:published_time" content="2024-12-04T08:15:31.879Z">
-<meta property="article:modified_time" content="2024-12-18T02:53:35.545Z">
+<meta property="article:modified_time" content="2025-03-10T05:24:07.043Z">
 <meta property="article:author" content="张宇博">
 <meta property="article:tag" content="sanyiba">
 <meta name="twitter:card" content="summary">
@@ -222,7 +222,7 @@
 
         <div class="statistics flex justify-around my-2.5">
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">1</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">2</div>
         <div class="label text-third-text-color text-sm">标签</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
@@ -230,7 +230,7 @@
         <div class="label text-third-text-color text-sm">分类</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">5</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">7</div>
         <div class="label text-third-text-color text-sm">文章</div>
     </a>
 </div>
@@ -284,8 +284,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-12-18 10:53:35</span>
-            <span class="mobile">2024-12-18 10:53:35</span>
+            <span class="desktop">2025-03-10 13:24:07</span>
+            <span class="mobile">2025-03-10 13:24:07</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -336,6 +336,11 @@
                      data-src="/assets/1734332220278.png"
                       alt="73433222027"
                 ></p>
+<p>1.首先是 reminder业务节点编码</p>
+<p>2.reminder业务节点 </p>
+<p>3.reminder业务地址配置</p>
+<p>4.reminder业务线配置</p>
+<p>5.reminder处理配置</p>
 <p>可以用事务同步,在一个事务中如果需要同时查找此事务操作过的数据,可以通过事务同步管理器来进行,此方法可以保证此操作在本始事务提交之后再进行,从而保证了调用别的操作的时候数据已经更新</p>
 <pre><code> // 注册事务同步
             TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() &#123;
@@ -355,9 +360,14 @@
 <p>关于 getPartnum() 方法的返回类型</p>
 <h5 id="转换BigDecimal"><a href="#转换BigDecimal" class="headerlink" title="转换BigDecimal"></a>转换BigDecimal</h5><p>BigDecimal partPrice &#x3D; new BigDecimal(jcShopDamageParts.getPtprice().toString()).multiply(new BigDecimal(jcShopDamageParts.getPartnum()));</p>
 <p>构建BigDecimal 的时候如果是Double转换,有可能会产生精度问题,因此最好转化为String,再转化为BigDecimal,而int这种或者Long,就不会有精度问题,可以直接传给构造BigDecimal的数据类型</p>
-<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">multiply就是乘的意思,这一句就是将每一个配件的单价乘以他对应的数量算出来总价后相加	</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">multiply就是乘的意思,这一句就是将每一个配件的单价乘以他对应的数量算出来总价后相加	</span><br><span class="line">然后这种比较的时候需要用countTo</span><br></pre></td></tr></table></figure></div>
 
 <p>返回类型：<br>通常情况下，getPartnum() 方法返回的是一个表示数量的数值类型，可能是 int、long 或 Integer、Long 等。<br>在你的代码中，getPartnum() 的返回值被传递给了 BigDecimal 的构造函数，这表明 getPartnum() 返回的值应该是可以转换为 BigDecimal 的类型。<br>使用 BigDecimal 构造函数：<br>如果 getPartnum() 返回的是 int 或 long，可以直接传递给 BigDecimal 构造函数，不需要转换为 String。<br>如果 getPartnum() 返回的是 Integer 或 Long，也可以直接传递给 BigDecimal 构造函数，因为 BigDecimal 有对应的构造函数支持这些类型。<br>示例代码<br>假设 getPartnum() 返回的是 int 类型：</p>
+<p><strong>@RequestPart</strong> 是 Spring MVC 提供的一个注解，用于将多部分请求（multipart request）中的某个部分绑定到控制器方法的参数上。它通常用于处理文件上传或表单数据提交，特别是在需要同时上传文件和其他表单字段的情况下。</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> R <span class="title function_">uploadBrandDataFromExcel</span><span class="params">(<span class="meta">@RequestPart(&quot;file&quot;)</span> MultipartFile file)</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>@RequestPart(“file”) 表示从请求中提取名为 file 的部分，并将其绑定到方法参数 MultipartFile file 上。<br>MultipartFile 是 Spring 提供的一个接口，用于表示上传的文件。<br>使用场景<br>当前端发送一个包含文件和其他表单字段的 multipart&#x2F;form-data 请求时，@RequestPart 可以确保正确解析并绑定这些部分到相应的参数。<br>如果请求中只有一个文件部分，也可以使用 @RequestParam，但 @RequestPart 更适合复杂的多部分请求。</p>
+<p>接收 multipart 请求：<br>客户端发送一个 multipart&#x2F;form-data 请求，其中包含名为 file 的文件部分。<br>检查请求是否包含 file 部分：<br>Spring 框架会自动检查请求中是否包含名为 file 的部分。如果存在，则继续下一步；否则返回错误响应。<br>解析并绑定 file 到 MultipartFile 参数：<br>将请求中的 file 部分解析为 MultipartFile 对象，并绑定到方法参数 file 上。<br>调用 uploadContractFile 方法：<br>调用 ContractInfoService 的 uploadContractFile 方法处理上传的文件。<br>返回结果：<br>返回 uploadContractFile 方法的执行结果，该结果是一个 R 类型的对象，包含了操作的状态码和消息。</p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
@@ -516,7 +526,7 @@
         
             <li>
                 <strong>更新于
-                    :</strong> 2024-12-18 10:53:35
+                    :</strong> 2025-03-10 13:24:07
             </li>
         
         <li>
@@ -582,17 +592,46 @@
 
         
             <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
-                if (hexo-config('comment.enable') == true && hexo-config('comment.system') != "") {
-  if (hexo-config('comment.system') == "waline") {
-    @require "./waline.styl"
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        评论
+    </div>
+    
 
-  } else if (hexo-config('comment.system') == "gitalk") {
-    @require "./gitalk.styl"
+        
+            
+    <div id="waline"></div>
+    <script type="module" data-swup-reload-script>
+      import { init } from '/js/libs/waline.mjs';
 
-  } else if (hexo-config('comment.system') == "twikoo") {
-    @require "./twikoo.styl"
-  }
-}
+      function loadWaline() {
+        init({
+          el: '#waline',
+          serverURL: 'https://example.example.com',
+          lang: 'zh-CN',
+          dark: 'body[class~="dark-mode"]',
+          reaction: false,
+          requiredMeta: ['nick', 'mail'],
+          emoji: [],
+          
+          
+        });
+      }
+
+      if (typeof swup !== 'undefined') {
+        loadWaline();
+      } else {
+        window.addEventListener('DOMContentLoaded', loadWaline);
+      }
+    </script>
+
+
+
+        
+    
+</div>
+
             </div>
         
     </div>
@@ -631,12 +670,12 @@
               <span>2024</span>
               -
             
-            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">你的情书</a>
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">你的情书</a>
             
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        共撰写了 5 篇文章
+                        共撰写了 7 篇文章
                     </span>
                     
                 </p>
