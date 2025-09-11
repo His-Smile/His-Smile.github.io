@@ -4,11 +4,30 @@
   
     
     <entry>
+      <title>学习记录</title>
+      <link href="/2025/05/16/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/"/>
+      <url>/2025/05/16/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/</url>
+      
+        <content type="html"><![CDATA[<h1 id="学习记录"><a href="#学习记录" class="headerlink" title="学习记录"></a>学习记录</h1><h2 id="关于IO流"><a href="#关于IO流" class="headerlink" title="关于IO流"></a>关于IO流</h2><p>1.输入输出的时候有字符编码，根本就是 阿斯克码和gbk，gbk一个中文两个字节，utf-8一个中文三个字节，还有是负数的时候就代表是中文了</p><p>2.关于序列化的时候，output，的时候是序列化，input的时候是反序列化</p><p>3.还有序列化的时候有个序列化码，arrayList里面就有，这个要一直，否则变动了接受类的时候就反序列化不上了</p><p>4.还有在使用流的时候要注意flush 刷可以用这个往后写，不清空，close是直接关闭不续写。需要弄到try catch 里面，在final里面也需要 try {  final{try { ios.close}}}这样子</p><h2 id="关于线程"><a href="#关于线程" class="headerlink" title="关于线程"></a>关于线程</h2><p>1.继承Mythred      (extend)     run 和 star的区别，前者表示创建对象，用对象去调用方法，并没有去创建线程， 后者 star会创建线程 这里面源码有native 表示用的本地方法，开启线程，再由jvm虚拟机去调用run方法。</p><p>2.多线程的实现方式，实现Runnable ，创建muthred的对象，重写run（）方法， 然后创建thread 然后，将创建的对象，仿作对象放进去，调用star方法</p><ol start="3"><li>实现Callable 和 future 重写call（）方法 然后创建future类的对象，把muable对象作为构造参数的方法放进去，</li></ol><p><strong>总结</strong> ，三种方式      1.实现runbale  或者 CALLABLE</p><p>​2.继承thread</p><p>线程是由名字的，默认是 Thread-编号，getpro 线程优先级，默认是5，范围是1-10，但是优先级不一定是都是他先执行，而是概率比较高 </p><p><strong>守护线程</strong> 线程.setDaemon(true)</p><h2 id="CurrentHashMap1-7"><a href="#CurrentHashMap1-7" class="headerlink" title="CurrentHashMap1.7"></a>CurrentHashMap1.7</h2><p>16个数组，只有0索引创建一个 长度为2的小数组，把地址值赋值给0索引，其他的索引都是null</p><p>1.根据建的哈希值计算出segment（大数组）数组的索引</p><p>2.如果为空，就创建一个默认为2的数组</p><p>3.根据建的哈希值计算出在小数组应该存入的索引（二次哈希）</p><p>4.如果为空，就存入，如果不是空，就挂在下面，桶元素，如果1索引也是null就会进行扩容然后再存入元素，</p><p>大数组无法扩容，只有小数组（hashEntey[]）会扩容,一个线程进来，只能锁小表，不锁大表</p><p><img                       lazyload                     src="/images/loading.svg"                     data-src="https://cdn.jsdelivr.net/gh/His-Smile/pic_bed/img/202505301030470.png"                      alt="image-20250530102952669"                ></p><h2 id="CurrentHashMap1-8"><a href="#CurrentHashMap1-8" class="headerlink" title="CurrentHashMap1.8"></a>CurrentHashMap1.8</h2><p>红黑树或者是链表这一套，然后用sy锁锁上</p><h2 id="级联更新"><a href="#级联更新" class="headerlink" title="级联更新"></a>级联更新</h2><p>修改主表的数据的时候，期望 从表的数据也进行也随之修改</p><h2 id="级联删除"><a href="#级联删除" class="headerlink" title="级联删除"></a>级联删除</h2><p>删除主表的数据的时候，期望 从表的数据也进行也随之删除</p><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 这样可以显是的命名外键，便于维护和删除</span><br><span class="line">alter table student add constraint su_fkl foreign <span class="title function_">key</span> <span class="params">(user_id)</span> references <span class="title function_">user</span> <span class="params">(id)</span> on update cascade on delete cascade;</span><br></pre></td></tr></table></figure></div><p><img                       lazyload                     src="/images/loading.svg"                     data-src="https://cdn.jsdelivr.net/gh/His-Smile/pic_bed/img/202506061359212.png"                      alt="image-20250606135900633"                ></p><p><img                       lazyload                     src="/images/loading.svg"                     data-src="https://cdn.jsdelivr.net/gh/His-Smile/pic_bed/img/202506061401444.png"                      alt="image-20250606140121626"                ></p><h2 id="视图（经常查询的需求）修改视图数据以后，原表数据也会修改"><a href="#视图（经常查询的需求）修改视图数据以后，原表数据也会修改" class="headerlink" title="视图（经常查询的需求）修改视图数据以后，原表数据也会修改"></a>视图（经常查询的需求）修改视图数据以后，原表数据也会修改</h2><p>将复杂的查询变成单表，就可以快速的查询，自动封装到一个虚拟的表里面</p><h4 id="视图的创建和查询"><a href="#视图的创建和查询" class="headerlink" title="视图的创建和查询"></a>视图的创建和查询</h4><p>1.创建视图的语法</p><p>create view 视图名称 [（列明列表）] AS 查询语句</p><p>2.查询视图的语法</p><p>SELECT * FROM 视图名称  </p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 学习记录 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>翻墙工具</title>
       <link href="/2025/05/07/%E7%BF%BB%E5%A2%99%E5%B7%A5%E5%85%B7/"/>
       <url>/2025/05/07/%E7%BF%BB%E5%A2%99%E5%B7%A5%E5%85%B7/</url>
       
-        <content type="html"><![CDATA[<h1 id="翻墙工具"><a href="#翻墙工具" class="headerlink" title="翻墙工具"></a>翻墙工具</h1><p><a class="link"   href="https://ikuuu.one/user" >https://ikuuu.one/user <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p><p>发送邮箱</p><ul><li><a class="link"   href="mailto:find@ikuuu.pro" >find@ikuuu.pro <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li></ul><p>下载一键导入配置</p><p>影视网站</p><p><a class="link"   href="https://nav.yiov.top/movie" >https://nav.yiov.top/movie <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p><p>工具网站</p><p><a class="link"   href="https://tool.browser.qq.com/" >https://tool.browser.qq.com/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>]]></content>
+        <content type="html"><![CDATA[<h1 id="翻墙工具"><a href="#翻墙工具" class="headerlink" title="翻墙工具"></a>翻墙工具</h1><p><a class="link"   href="https://ikuuu.one/user" >https://ikuuu.one/user <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p><p>发送邮箱</p><ul><li><a class="link"   href="mailto:find@ikuuu.pro" >find@ikuuu.pro <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li></ul><p>下载一键导入配置</p><p>影视网站</p><p><a class="link"   href="https://nav.yiov.top/movie" >https://nav.yiov.top/movie <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p><p>工具网站</p><p><a class="link"   href="https://tool.browser.qq.com/" >https://tool.browser.qq.com/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p><p>推荐的代理工具</p><p><a class="link"   href="https://yiov.top/gfw/Karing.html" >https://yiov.top/gfw/Karing.html <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>]]></content>
       
       
       
@@ -221,17 +240,6 @@
     
     
     <entry>
-      <title>电影</title>
-      <link href="/movies/index.html"/>
-      <url>/movies/index.html</url>
-      
-        <content type="html"><![CDATA[]]></content>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>友链</title>
       <link href="/link/index.html"/>
       <url>/link/index.html</url>
@@ -246,6 +254,17 @@
       <title>分类</title>
       <link href="/categories/index.html"/>
       <url>/categories/index.html</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>电影</title>
+      <link href="/movies/index.html"/>
+      <url>/movies/index.html</url>
       
         <content type="html"><![CDATA[]]></content>
       
