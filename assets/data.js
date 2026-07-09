@@ -1,26 +1,47 @@
 const ASSET_BASE = "https://cdn.jsdelivr.net/gh/His-Smile/pic_bed/img/";
+const LETTERBOXD_BASE = "https://a.ltrbxd.com/resized/";
+const ANIME_BACKDROP_BASE = "https://cdn.jsdelivr.net/gh/His-Smile/pic_bed/anime/";
 
 window.BLOG_DATA = {
   site: {
-    name: "His-Smile",
+    name: "我的情书",
     author: "张宇博",
-    alias: "你的情书",
+    alias: "His-Smile",
     since: "2024-10-17",
     location: "China",
-    motto: "把学习、代码和生活的碎片整理成一封长期更新的情书。",
-    description: "Java 学习、数据库、代码问题、图床记录和个人日常。",
+    motto: "愿风雪替我，把未寄出的信送远。",
+    description: "Java、数据库、图床与开发札记，收在这封慢慢写完的信里。",
     github: "https://github.com/His-Smile",
     originalSite: "https://his-smile.github.io/",
     imageHost: "https://github.com/His-Smile/pic_bed",
     avatar: ASSET_BASE + "p1.png",
-    hero: ASSET_BASE + "202412181632154.jpg",
-    heroAlt: "His-Smile hero image",
+    hero: LETTERBOXD_BASE + "sm/upload/t9/8v/zc/kc/love%20letter-1920-1920-1080-1080-crop-000000.jpg?v=f89eae0676",
+    filmPoster: LETTERBOXD_BASE + "film-poster/1/8/3/6/8/18368-love-letter-0-600-0-900-crop.jpg?v=20ed5ef9fd",
+    filmStill: LETTERBOXD_BASE + "sm/upload/t9/8v/zc/kc/love%20letter-1200-1200-675-675-crop-000000.jpg?v=f89eae0676",
+    backdrops: [
+      LETTERBOXD_BASE + "sm/upload/t9/8v/zc/kc/love%20letter-1920-1920-1080-1080-crop-000000.jpg?v=f89eae0676",
+      LETTERBOXD_BASE + "sm/upload/t9/8v/zc/kc/love%20letter-1200-1200-675-675-crop-000000.jpg?v=f89eae0676",
+      ANIME_BACKDROP_BASE + "hero-character.jpg",
+      ANIME_BACKDROP_BASE + "lake-pier-blue.jpg",
+      ANIME_BACKDROP_BASE + "lake-pier.jpg",
+      ASSET_BASE + "202412181632154.jpg",
+      ASSET_BASE + "202412191906130.jpg",
+      ASSET_BASE + "202412191906825.jpg",
+      ASSET_BASE + "202412191907536.jpg",
+      ASSET_BASE + "202412191912600.jpg"
+    ],
+    heroAlt: "电影《情书》的雪景氛围图",
     typewriterLines: [
-      "我口袋只剩玫瑰一片，此行又山高路远。",
-      "把写过的代码、踩过的坑和没说完的话，慢慢存进这里。",
-      "一个建立在互联网边缘的小站，记录学习，也记录生活。",
-      "愿每一次回头翻阅，都能看见自己往前走过的痕迹。"
+      "お元気ですか。私は元気です。",
+      "落雪无声，旧事有回音。",
+      "把问题记下来，也把走过的路留下来。",
+      "很多年后再读，仍像收到一封回信。"
     ]
+  },
+  diary: {
+    passwordHash: "abab64fbaf8ab0aa0d0f13d46742925e65da9cf127e93a798a555307beff13c6",
+    hint: "那一天，接在一封信后面。",
+    moods: ["晴", "雪", "雨", "晚风", "想念", "疲惫"]
   },
   posts: [
     {
@@ -276,6 +297,8 @@ hexo deploy</code></pre>
     }
   ],
   photos: [
+    { src: LETTERBOXD_BASE + "sm/upload/t9/8v/zc/kc/love%20letter-1200-1200-675-675-crop-000000.jpg?v=f89eae0676", title: "情书雪景", tag: "Love Letter" },
+    { src: LETTERBOXD_BASE + "film-poster/1/8/3/6/8/18368-love-letter-0-600-0-900-crop.jpg?v=20ed5ef9fd", title: "情书海报", tag: "Film" },
     { src: ASSET_BASE + "202412181632154.jpg", title: "首页背景", tag: "Hero" },
     { src: ASSET_BASE + "202412191906130.jpg", title: "图床素材 01", tag: "PicBed" },
     { src: ASSET_BASE + "202412191906825.jpg", title: "图床素材 02", tag: "PicBed" },

@@ -6,6 +6,7 @@ const byDate = [...data.posts].sort((a, b) => b.date.localeCompare(a.date));
 const featured = byDate.slice(0, 4);
 const allTags = [...new Set(data.posts.flatMap((post) => post.tags))];
 const allCategories = [...new Set(data.posts.map((post) => post.category))];
+let currentBackdrop = (data.site.backdrops || [data.site.hero])[Math.floor(Math.random() * (data.site.backdrops || [data.site.hero]).length)];
 const ANIME_BASE = "https://cdn.jsdelivr.net/gh/His-Smile/pic_bed/anime/";
 const COVER_POOLS = {
   java: ["lake-pier.jpg", "ink-lotus.png", "twilight-girl.png"],
@@ -73,6 +74,21 @@ function localCoverUrl(file) {
   return ANIME_BASE + file;
 }
 
+function applyPageBackdrop(image = currentBackdrop) {
+  currentBackdrop = image;
+  document.documentElement.style.setProperty("--page-backdrop-image", `url("${image}")`);
+}
+
+function randomBackdrop() {
+  const backdrops = data.site.backdrops || [data.site.hero];
+  if (backdrops.length < 2) return backdrops[0];
+  let next = currentBackdrop;
+  while (next === currentBackdrop) {
+    next = backdrops[Math.floor(Math.random() * backdrops.length)];
+  }
+  return next;
+}
+
 function storedCover(post) {
   return sessionStorage.getItem(`his-smile-cover:${post.id}`);
 }
@@ -105,6 +121,7 @@ function renderHeader() {
     ["首页", "index.html", "home"],
     ["归档", "archive.html", "archive"],
     ["图库", "gallery.html", "images"],
+    ["日记", "diary.html", "lock-keyhole"],
     ["关于", "about.html", "user-round"]
   ];
 
@@ -208,12 +225,15 @@ function postCard(post, variant = "default") {
 function renderHome() {
   const latest = byDate[0];
   const secondary = byDate.slice(1, 7);
+  applyPageBackdrop(currentBackdrop);
   shellPage(`
-    <section class="hero" style="--hero-image: url('${data.site.hero}')">
+    <section class="hero" style="--hero-image: url('${currentBackdrop}')">
       <div class="hero-shade"></div>
       <div class="hero-atmosphere" aria-hidden="true"></div>
+      <div class="snow-field" aria-hidden="true"></div>
+      <div class="snow-field snow-field-far" aria-hidden="true"></div>
       <div class="hero-content reveal">
-        <p class="eyebrow">Personal engineering journal</p>
+        <p class="eyebrow">Love Letter Journal</p>
         <h1>${data.site.name}</h1>
         <p>${data.site.description}</p>
         <div class="typewriter" aria-live="polite">
@@ -222,13 +242,32 @@ function renderHome() {
         <div class="hero-actions">
           <a class="primary-action" href="${postUrl(latest)}">${icon("book-open-text")}最新文章</a>
           <a class="secondary-action" href="archive.html">${icon("archive")}浏览归档</a>
+          <button class="secondary-action backdrop-action" data-backdrop-refresh type="button">${icon("refresh-cw")}换一张</button>
         </div>
       </div>
+      <figure class="hero-film-frame reveal">
+        <img src="${data.site.filmPoster}" alt="电影《情书》海报">
+        <figcaption>
+          <span>Love Letter · 1995</span>
+          <strong>所以这个站叫「我的情书」</strong>
+        </figcaption>
+      </figure>
       <a class="hero-next" href="#feed" aria-label="查看文章">${icon("chevron-down")}</a>
     </section>
 
     <section class="home-band" id="feed">
       <div class="blur-backdrop" aria-hidden="true"></div>
+      <section class="letter-mood reveal">
+        <div class="letter-copy">
+          <p class="eyebrow">写在开头</p>
+          <h2>一些记录，慢慢留下来</h2>
+          <p>《情书》里最动人的地方，是很多话隔了很久才抵达。我把学习和开发里的问题写在这里，像把一张张旧书卡夹回书里，等以后再翻开</p>
+        </div>
+        <div class="letter-stills">
+          <img src="${data.site.filmStill}" alt="电影《情书》雪景剧照">
+          <img src="${data.site.filmPoster}" alt="电影《情书》海报">
+        </div>
+      </section>
       <div class="content-grid">
         <aside class="profile-panel reveal">
           <img class="avatar" src="${data.site.avatar}" alt="${data.site.alias}">
@@ -250,8 +289,8 @@ function renderHome() {
             <span>Daily Notes</span>
           </div>
           <div class="section-head reveal">
-            <p class="eyebrow">Featured</p>
-            <h2>最近在整理的内容</h2>
+            <p class="eyebrow">Latest Letters</p>
+            <h2>最近写下的内容</h2>
           </div>
           ${postCard(latest, "featured reveal")}
           <div class="post-grid">
@@ -275,6 +314,14 @@ function renderHome() {
           </section>
         </aside>
       </div>
+
+      <section class="site-runtime reveal">
+        <strong>我的情书</strong>
+        <span>© 2026</span>
+        <span>建站 <b data-runtime-days>0</b> 天 <b data-runtime-hours>0</b> 时 <b data-runtime-minutes>0</b> 分 <b data-runtime-seconds>0</b> 秒</span>
+        <span>${icon("eye")} <b>10335</b> 访问</span>
+        <span>${icon("map-pin")} 本站由 <b>GitHub Pages</b> 与 <b>jsDelivr</b> 提供静态服务</span>
+      </section>
     </section>
   `, { fullBleed: true });
 }
@@ -400,8 +447,8 @@ function renderGallery() {
   shellPage(`
     <section class="page-hero compact reveal">
       <p class="eyebrow">Gallery</p>
-      <h1>图床与素材</h1>
-      <p>这里集中展示 ` + data.site.imageHost.replace("https://github.com/", "") + ` 中被博客使用的图片资源。</p>
+      <h1>图床与情书氛围</h1>
+      <p>这里放博客用到的图片，也保留一点电影《情书》的雪、信和日影感。</p>
     </section>
     <section class="gallery-grid">
       ${data.photos.map((photo) => `
@@ -428,13 +475,14 @@ function renderAbout() {
 
     <section class="about-layout">
       <div class="about-copy reveal">
-        <h2>这个博客要解决什么</h2>
-        <p>它不是一个临时笔记堆，而是一个可以持续维护的个人知识前台。内容重点放在 Java、数据库、图床、代码问题和日常开发经验。</p>
-        <p>新版本把首页、归档、图库、文章详情和关于页分开，保持 GitHub Pages 的部署简单性，同时让读者更容易找到内容。</p>
+        <h2>为什么叫我的情书</h2>
+        <p>因为我很喜欢岩井俊二的电影《情书》。那种雪地里迟到的问候、旧书卡上的名字、没有说出口却一直留着的话，和我想做这个博客的感觉很像。</p>
+        <p>这里仍然会认真记录 Java、数据库、图床、代码问题和日常开发经验。只是我希望它更像一封信，有温度，也有可以反复回看的痕迹。</p>
+        <p>首页、归档、图库、文章详情和关于页已经分开，部署仍然保持 GitHub Pages 的简单方式；读者可以更快找到内容，我也能长期把它写下去。</p>
       </div>
       <div class="about-list reveal">
         <h2>站点结构</h2>
-        <a href="index.html">${icon("home")}首页内容门户</a>
+        <a href="index.html">${icon("home")}首页</a>
         <a href="archive.html">${icon("archive")}归档与分类</a>
         <a href="gallery.html">${icon("image")}图床图库</a>
         <a href="${data.site.github}" target="_blank" rel="noreferrer">${icon("github")}GitHub 项目</a>
@@ -460,6 +508,202 @@ function renderAbout() {
       </div>
     </section>
   `);
+}
+
+const DIARY_ACCESS_KEY = "his-smile-diary-access";
+const DIARY_ENTRIES_KEY = "his-smile-diary-entries";
+
+async function sha256Hex(value) {
+  const bytes = new TextEncoder().encode(value);
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+function isDiaryUnlocked() {
+  return sessionStorage.getItem(DIARY_ACCESS_KEY) === data.diary.passwordHash;
+}
+
+function readDiaryEntries() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(DIARY_ENTRIES_KEY) || "[]");
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeDiaryEntries(entries) {
+  localStorage.setItem(DIARY_ENTRIES_KEY, JSON.stringify(entries));
+}
+
+function formatDiaryDate(value) {
+  return new Intl.DateTimeFormat("zh-CN", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit"
+  }).format(new Date(value));
+}
+
+function diaryEntryMarkup(entry) {
+  return `
+    <article class="diary-entry" data-entry-id="${entry.id}">
+      <div>
+        <span>${escapeHtml(entry.mood)}</span>
+        <time>${formatDiaryDate(entry.createdAt)}</time>
+      </div>
+      <h3>${escapeHtml(entry.title || "未命名的一天")}</h3>
+      <p>${escapeHtml(entry.body).replaceAll("\n", "<br>")}</p>
+      <button class="text-button" data-diary-delete="${entry.id}">${icon("trash-2")}删除</button>
+    </article>
+  `;
+}
+
+function diaryEntriesMarkup() {
+  const entries = readDiaryEntries().sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  if (!entries.length) {
+    return `<div class="diary-empty">还没有写下第一篇。等一场雪，或者等一个很普通的夜晚。</div>`;
+  }
+  return entries.map(diaryEntryMarkup).join("");
+}
+
+function renderDiary() {
+  const unlocked = isDiaryUnlocked();
+  shellPage(`
+    <section class="diary-hero reveal">
+      <div class="snow-field" aria-hidden="true"></div>
+      <div>
+        <p class="eyebrow">Private Letter</p>
+        <h1>留给自己</h1>
+        <p>安静一点，写完就好</p>
+      </div>
+      <div class="diary-stamp" aria-hidden="true">
+        <span>01.17</span>
+        <strong>private</strong>
+      </div>
+    </section>
+
+    ${unlocked ? `
+      <section class="diary-room reveal">
+        <div class="diary-compose">
+          <div class="section-head">
+            <p class="eyebrow">Tonight</p>
+            <h2>写一点今天</h2>
+          </div>
+          <label>
+            <span>标题</span>
+            <input data-diary-title maxlength="40" placeholder="比如：雪停以后">
+          </label>
+          <div class="mood-picker" data-mood-picker>
+            ${data.diary.moods.map((mood, index) => `
+              <button class="${index === 0 ? "active" : ""}" data-mood="${escapeHtml(mood)}">${escapeHtml(mood)}</button>
+            `).join("")}
+          </div>
+          <label>
+            <span>正文</span>
+            <textarea data-diary-body rows="9" placeholder="把今天没说出口的话，慢慢写在这里。"></textarea>
+          </label>
+          <div class="diary-actions">
+            <button class="primary-action" data-diary-save>${icon("send")}保存</button>
+            <button class="secondary-action calm" data-diary-lock>${icon("lock")}锁上</button>
+          </div>
+          <p class="diary-note" data-diary-note></p>
+        </div>
+        <div class="diary-list" data-diary-list>
+          ${diaryEntriesMarkup()}
+        </div>
+      </section>
+    ` : `
+      <section class="diary-gate reveal">
+        <form class="diary-lock" data-diary-lock-form>
+          <p class="eyebrow">Password</p>
+          <h2>把门轻轻推开。</h2>
+          <p>答案藏在那一天，也藏在一封信的开头。</p>
+          <label>
+            <span>密码</span>
+            <input type="password" data-diary-password autocomplete="current-password" placeholder="输入你的私密密码">
+          </label>
+          <button class="primary-action" type="submit">${icon("key-round")}进入日记</button>
+          <small>${escapeHtml(data.diary.hint)}</small>
+          <p class="diary-note" data-diary-message></p>
+        </form>
+      </section>
+    `}
+  `);
+  bindDiary(unlocked);
+}
+
+function bindDiary(unlocked) {
+  if (!unlocked) {
+    document.querySelector("[data-diary-lock-form]")?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const input = document.querySelector("[data-diary-password]");
+      const message = document.querySelector("[data-diary-message]");
+      const hash = await sha256Hex(input.value);
+      if (hash === data.diary.passwordHash) {
+        sessionStorage.setItem(DIARY_ACCESS_KEY, hash);
+        renderDiary();
+        return;
+      }
+      message.textContent = "密码不对。别急，雪会慢慢落下来。";
+      input.value = "";
+      input.focus();
+    });
+    return;
+  }
+
+  let selectedMood = data.diary.moods[0];
+  document.querySelectorAll("[data-mood]").forEach((button) => {
+    button.addEventListener("click", () => {
+      selectedMood = button.dataset.mood;
+      document.querySelectorAll("[data-mood]").forEach((item) => item.classList.toggle("active", item === button));
+    });
+  });
+
+  document.querySelector("[data-diary-save]")?.addEventListener("click", () => {
+    const title = document.querySelector("[data-diary-title]").value.trim();
+    const body = document.querySelector("[data-diary-body]").value.trim();
+    const note = document.querySelector("[data-diary-note]");
+    if (!body) {
+      note.textContent = "正文还空着。哪怕只写一句，也算今天留下了痕迹。";
+      return;
+    }
+    const entries = readDiaryEntries();
+    entries.push({
+      id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+      title,
+      mood: selectedMood,
+      body,
+      createdAt: new Date().toISOString()
+    });
+    writeDiaryEntries(entries);
+    document.querySelector("[data-diary-title]").value = "";
+    document.querySelector("[data-diary-body]").value = "";
+    document.querySelector("[data-diary-list]").innerHTML = diaryEntriesMarkup();
+    note.textContent = "保存好了。像把一张纸夹进了旧书里。";
+    bindDiaryDelete();
+    if (window.lucide) window.lucide.createIcons({ strokeWidth: 1.8 });
+  });
+
+  document.querySelector("[data-diary-lock]")?.addEventListener("click", () => {
+    sessionStorage.removeItem(DIARY_ACCESS_KEY);
+    renderDiary();
+  });
+
+  bindDiaryDelete();
+}
+
+function bindDiaryDelete() {
+  document.querySelectorAll("[data-diary-delete]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const entries = readDiaryEntries().filter((entry) => entry.id !== button.dataset.diaryDelete);
+      writeDiaryEntries(entries);
+      document.querySelector("[data-diary-list]").innerHTML = diaryEntriesMarkup();
+      bindDiaryDelete();
+      if (window.lucide) window.lucide.createIcons({ strokeWidth: 1.8 });
+    });
+  });
 }
 
 function bindGlobalInteractions() {
@@ -492,6 +736,8 @@ function bindGlobalInteractions() {
   bindCoverFallback();
   bindCoverRefresh();
   bindTypewriter();
+  bindBackdropRefresh();
+  bindRuntime();
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
@@ -580,12 +826,43 @@ function bindTypewriter() {
   tick();
 }
 
+function bindBackdropRefresh() {
+  document.querySelector("[data-backdrop-refresh]")?.addEventListener("click", () => {
+    const next = randomBackdrop();
+    applyPageBackdrop(next);
+    document.querySelector(".hero")?.style.setProperty("--hero-image", `url("${next}")`);
+  });
+}
+
+function renderRuntime() {
+  const daysTarget = document.querySelector("[data-runtime-days]");
+  if (!daysTarget) return;
+  const start = new Date(`${data.site.since}T00:00:00+08:00`).getTime();
+  const totalSeconds = Math.max(0, Math.floor((Date.now() - start) / 1000));
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  daysTarget.textContent = days;
+  document.querySelector("[data-runtime-hours]").textContent = hours;
+  document.querySelector("[data-runtime-minutes]").textContent = minutes;
+  document.querySelector("[data-runtime-seconds]").textContent = seconds;
+}
+
+function bindRuntime() {
+  if (!document.querySelector("[data-runtime-days]")) return;
+  renderRuntime();
+  setInterval(renderRuntime, 1000);
+}
+
 const renderers = {
   home: renderHome,
   article: renderArticle,
   archive: renderArchive,
   gallery: renderGallery,
+  diary: renderDiary,
   about: renderAbout
 };
 
+applyPageBackdrop(currentBackdrop);
 renderers[page]?.();

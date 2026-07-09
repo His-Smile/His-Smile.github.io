@@ -1,29 +1,33 @@
 :root {
   color-scheme: light;
-  --bg: #f7f5ef;
+  --bg: #f4f7f8;
   --surface: rgba(255, 255, 255, 0.82);
   --surface-strong: #ffffff;
-  --text: #171717;
-  --muted: #6e6a63;
-  --line: rgba(35, 32, 27, 0.12);
-  --accent: #0f9b82;
-  --accent-2: #c34a36;
-  --shadow: 0 18px 45px rgba(37, 31, 22, 0.12);
+  --text: #16191d;
+  --muted: #66717a;
+  --line: rgba(23, 39, 50, 0.13);
+  --accent: #a83844;
+  --accent-2: #1d7f8c;
+  --shadow: 0 18px 45px rgba(19, 35, 46, 0.13);
   --max: 1180px;
   --radius: 8px;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+  --page-backdrop-image: url("https://a.ltrbxd.com/resized/sm/upload/t9/8v/zc/kc/love%20letter-1920-1920-1080-1080-crop-000000.jpg?v=f89eae0676");
+  --font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+  --font-title: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", "SimSun", serif;
+  --font-title-soft: "LXGW WenKai", "Kaiti SC", "KaiTi", "STKaiti", var(--font-title);
+  font-family: var(--font-body);
 }
 
 .dark {
   color-scheme: dark;
-  --bg: #11110f;
-  --surface: rgba(29, 29, 26, 0.78);
-  --surface-strong: #1b1b18;
-  --text: #f4f1e8;
-  --muted: #b6b0a4;
-  --line: rgba(246, 239, 220, 0.14);
-  --accent: #4fd3b8;
-  --accent-2: #ef7c5f;
+  --bg: #0f1519;
+  --surface: rgba(21, 29, 34, 0.76);
+  --surface-strong: #151d22;
+  --text: #f2f7f8;
+  --muted: #aebcc4;
+  --line: rgba(230, 243, 248, 0.15);
+  --accent: #ff96a0;
+  --accent-2: #7cd7e5;
   --shadow: 0 18px 45px rgba(0, 0, 0, 0.3);
 }
 
@@ -39,15 +43,33 @@ body {
   margin: 0;
   min-width: 320px;
   background:
-    linear-gradient(180deg, rgba(15, 155, 130, 0.08), transparent 360px),
+    linear-gradient(180deg, rgba(29, 127, 140, 0.12), transparent 360px),
+    radial-gradient(circle at 82% 6%, rgba(168, 56, 68, 0.12), transparent 260px),
     var(--bg);
   color: var(--text);
   overflow-x: hidden;
 }
 
+body[data-page="home"] {
+  background:
+    linear-gradient(180deg, rgba(244, 247, 248, 0.18), var(--bg) 78%),
+    linear-gradient(90deg, rgba(244, 247, 248, 0.72), rgba(244, 247, 248, 0.5)),
+    var(--page-backdrop-image) center / cover fixed,
+    var(--bg);
+}
+
+.dark body[data-page="home"] {
+  background:
+    linear-gradient(180deg, rgba(15, 21, 25, 0.18), var(--bg) 78%),
+    linear-gradient(90deg, rgba(15, 21, 25, 0.78), rgba(15, 21, 25, 0.54)),
+    var(--page-backdrop-image) center / cover fixed,
+    var(--bg);
+}
+
 body,
 button,
-input {
+input,
+textarea {
   font: inherit;
 }
 
@@ -65,6 +87,31 @@ button {
   border: 0;
   color: inherit;
   cursor: pointer;
+}
+
+input,
+textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.62);
+  color: var(--text);
+  outline: none;
+}
+
+textarea {
+  resize: vertical;
+}
+
+input:focus,
+textarea:focus {
+  border-color: color-mix(in srgb, var(--accent) 68%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.dark input,
+.dark textarea {
+  background: rgba(15, 21, 25, 0.66);
 }
 
 svg {
@@ -118,6 +165,11 @@ svg {
 .brand small {
   display: block;
   line-height: 1.1;
+}
+
+.brand strong {
+  font-family: var(--font-title);
+  font-weight: 650;
 }
 
 .brand small {
@@ -215,7 +267,7 @@ svg {
   display: flex;
   align-items: center;
   background-image: var(--hero-image);
-  background-position: center;
+  background-position: center 38%;
   background-size: cover;
   overflow: hidden;
 }
@@ -232,19 +284,53 @@ svg {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.1) 58%, rgba(0, 0, 0, 0.46)),
-    linear-gradient(0deg, rgba(0, 0, 0, 0.24), rgba(0, 0, 0, 0.04));
+    linear-gradient(90deg, rgba(12, 16, 20, 0.82), rgba(12, 16, 20, 0.28) 54%, rgba(12, 16, 20, 0.7)),
+    linear-gradient(0deg, rgba(12, 16, 20, 0.34), rgba(12, 16, 20, 0.05));
 }
 
 .hero-atmosphere {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(115deg, transparent 0 38%, rgba(120, 240, 214, 0.2) 46%, transparent 56%),
-    radial-gradient(circle at 20% 72%, rgba(195, 74, 54, 0.24), transparent 34%);
+    linear-gradient(115deg, transparent 0 38%, rgba(220, 245, 255, 0.22) 46%, transparent 56%),
+    radial-gradient(circle at 23% 68%, rgba(168, 56, 68, 0.22), transparent 34%),
+    radial-gradient(circle at 78% 20%, rgba(125, 215, 229, 0.2), transparent 32%);
   mix-blend-mode: screen;
   opacity: 0.72;
   animation: atmosphere-drift 9s ease-in-out infinite alternate;
+}
+
+.snow-field {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.92) 0 1px, transparent 1.8px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.58) 0 1px, transparent 2.4px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.38) 0 1px, transparent 2.8px);
+  background-size: 140px 140px, 220px 220px, 360px 360px;
+  background-position: 0 0, 42px 60px, 90px 120px;
+  opacity: 0.55;
+  pointer-events: none;
+  animation: snow-fall 18s linear infinite;
+}
+
+.snow-field-far {
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.72) 0 0.7px, transparent 1.4px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.42) 0 0.8px, transparent 1.8px);
+  background-size: 90px 90px, 170px 170px;
+  background-position: 18px 0, 70px 42px;
+  opacity: 0.42;
+  filter: blur(0.2px);
+  animation: snow-fall-far 30s linear infinite;
+}
+
+@keyframes snow-fall {
+  to { background-position: 80px 420px, 12px 520px, 160px 680px; }
+}
+
+@keyframes snow-fall-far {
+  to { background-position: 28px 360px, 40px 520px; }
 }
 
 @keyframes atmosphere-drift {
@@ -271,7 +357,7 @@ svg {
 }
 
 .hero .eyebrow {
-  color: #78f0d6;
+  color: #ffd1d6;
 }
 
 .hero h1,
@@ -279,8 +365,10 @@ svg {
 .about-hero h1,
 .article-hero h1 {
   margin: 0;
-  font-size: clamp(48px, 7vw, 96px);
-  line-height: 0.94;
+  font-family: var(--font-title);
+  font-size: clamp(46px, 6.4vw, 84px);
+  font-weight: 650;
+  line-height: 1.02;
   letter-spacing: 0;
 }
 
@@ -299,9 +387,9 @@ svg {
   min-height: 58px;
   margin-top: 18px;
   padding: 14px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.26);
+  border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.09);
+  background: rgba(255, 255, 255, 0.12);
   color: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(18px);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
@@ -312,7 +400,7 @@ svg {
   width: 2px;
   height: 1.2em;
   margin-left: 4px;
-  background: #78f0d6;
+  background: #ffd1d6;
   animation: caret-blink 0.9s steps(2, jump-none) infinite;
 }
 
@@ -341,12 +429,64 @@ svg {
 
 .primary-action {
   background: var(--accent);
-  color: #071411;
+  color: #fff;
+}
+
+.hero-film-frame {
+  position: absolute;
+  z-index: 2;
+  right: max(24px, calc((100vw - var(--max)) / 2));
+  bottom: 72px;
+  width: min(220px, 22vw);
+  margin: 0;
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.13);
+  color: #fff;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(18px);
+  transform: rotate(2deg);
+}
+
+.hero-film-frame img {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: calc(var(--radius) - 2px);
+  filter: saturate(0.88) contrast(1.04);
+}
+
+.hero-film-frame figcaption {
+  display: grid;
+  gap: 4px;
+  padding: 10px 4px 4px;
+}
+
+.hero-film-frame span {
+  color: #ffd1d6;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.hero-film-frame strong {
+  font-size: 14px;
+  line-height: 1.45;
 }
 
 .secondary-action {
   border: 1px solid rgba(255, 255, 255, 0.42);
   color: #fff;
+}
+
+.secondary-action.calm {
+  border-color: var(--line);
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.backdrop-action {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .hero-next {
@@ -395,7 +535,7 @@ svg {
   height: 780px;
   background:
     linear-gradient(180deg, rgba(247, 245, 239, 0.42), var(--bg) 72%),
-    url("https://cdn.jsdelivr.net/gh/His-Smile/pic_bed/img/202412181632154.jpg") center / cover fixed;
+    var(--page-backdrop-image) center / cover fixed;
   filter: blur(18px) saturate(1.1);
   opacity: 0.46;
   transform: scale(1.04);
@@ -404,8 +544,118 @@ svg {
 .dark .blur-backdrop {
   background:
     linear-gradient(180deg, rgba(17, 17, 15, 0.38), var(--bg) 72%),
-    url("https://cdn.jsdelivr.net/gh/His-Smile/pic_bed/img/202412181632154.jpg") center / cover fixed;
+    var(--page-backdrop-image) center / cover fixed;
   opacity: 0.36;
+}
+
+.letter-mood {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(280px, 430px);
+  gap: 34px;
+  align-items: center;
+  margin-bottom: 28px;
+  padding: 30px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(244, 247, 248, 0.58)),
+    linear-gradient(90deg, rgba(168, 56, 68, 0.08), rgba(29, 127, 140, 0.1));
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(20px);
+}
+
+.dark .letter-mood {
+  background:
+    linear-gradient(135deg, rgba(21, 29, 34, 0.76), rgba(15, 21, 25, 0.62)),
+    linear-gradient(90deg, rgba(255, 150, 160, 0.1), rgba(124, 215, 229, 0.1));
+}
+
+.letter-copy h2 {
+  max-width: 620px;
+  margin: 0;
+  font-family: var(--font-title);
+  font-size: clamp(28px, 3.2vw, 44px);
+  font-weight: 580;
+  line-height: 1.18;
+}
+
+.letter-copy p:not(.eyebrow) {
+  max-width: 660px;
+  margin: 20px 0 0;
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.9;
+}
+
+.letter-stills {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(120px, 0.62fr);
+  gap: 14px;
+  align-items: end;
+}
+
+.letter-stills img {
+  width: 100%;
+  object-fit: cover;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.letter-stills img:first-child {
+  aspect-ratio: 4 / 3;
+  filter: saturate(0.82) contrast(1.03);
+}
+
+.letter-stills img:nth-child(2) {
+  aspect-ratio: 2 / 3;
+  border: 6px solid rgba(255, 255, 255, 0.72);
+  transform: translateY(18px) rotate(2deg);
+}
+
+.site-runtime {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px 14px;
+  margin: 34px auto 0;
+  padding: 18px 20px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.5);
+  color: var(--muted);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", "Microsoft YaHei", sans-serif;
+  font-size: 12px;
+  line-height: 1.9;
+  text-align: center;
+  backdrop-filter: blur(16px);
+}
+
+.dark .site-runtime {
+  background: rgba(15, 21, 25, 0.48);
+}
+
+.site-runtime strong {
+  color: var(--accent-2);
+  font-size: 18px;
+  font-family: var(--font-title-soft);
+  font-weight: 620;
+}
+
+.site-runtime b {
+  color: #45b8ff;
+  font-weight: 850;
+}
+
+.site-runtime span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.site-runtime svg {
+  width: 14px;
+  height: 14px;
 }
 
 .content-grid {
@@ -462,7 +712,9 @@ svg {
 .about-list h2,
 .milestones h2 {
   margin: 0;
+  font-family: var(--font-title);
   font-size: 24px;
+  font-weight: 620;
   letter-spacing: 0;
 }
 
@@ -669,7 +921,9 @@ svg {
 
 .post-card h3 {
   margin: 14px 0 8px;
+  font-family: var(--font-title);
   font-size: 24px;
+  font-weight: 620;
   line-height: 1.25;
 }
 
@@ -784,6 +1038,7 @@ svg {
 
 .page-hero h1 {
   max-width: 760px;
+  font-weight: 620;
   font-size: clamp(42px, 6vw, 76px);
 }
 
@@ -802,6 +1057,7 @@ svg {
 }
 
 .article-hero h1 {
+  font-weight: 620;
   font-size: clamp(38px, 6vw, 76px);
 }
 
@@ -900,6 +1156,8 @@ svg {
 .article-content h2,
 .article-content h3 {
   margin: 2.1em 0 0.7em;
+  font-family: var(--font-title);
+  font-weight: 620;
   line-height: 1.2;
 }
 
@@ -956,7 +1214,9 @@ svg {
 
 .timeline h2 {
   margin: 0;
+  font-family: var(--font-title);
   font-size: 34px;
+  font-weight: 620;
 }
 
 .timeline-item {
@@ -1036,7 +1296,9 @@ svg {
 .photo-tile strong {
   right: 16px;
   bottom: 18px;
+  font-family: var(--font-title);
   font-size: 20px;
+  font-weight: 620;
 }
 
 .lightbox {
@@ -1080,6 +1342,277 @@ svg {
   object-fit: cover;
   border-radius: 50%;
   box-shadow: var(--shadow);
+}
+
+.diary-hero,
+.diary-gate,
+.diary-room {
+  width: min(calc(100% - 36px), var(--max));
+  margin: 0 auto;
+}
+
+.diary-hero {
+  position: relative;
+  min-height: 360px;
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) auto;
+  align-items: center;
+  gap: 24px;
+  overflow: hidden;
+  padding: 42px 48px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(90deg, rgba(10, 17, 22, 0.72), rgba(10, 17, 22, 0.18)),
+    url("https://a.ltrbxd.com/resized/sm/upload/t9/8v/zc/kc/love%20letter-1200-1200-675-675-crop-000000.jpg?v=f89eae0676") center / cover;
+  color: #fff;
+  box-shadow: var(--shadow);
+}
+
+.diary-hero > div:not(.snow-field) {
+  position: relative;
+  z-index: 1;
+  max-width: 620px;
+}
+
+.diary-hero h1 {
+  margin: 0;
+  max-width: 620px;
+  font-family: var(--font-title);
+  font-size: clamp(38px, 4.8vw, 62px);
+  font-weight: 560;
+  line-height: 1.12;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+.diary-hero p:not(.eyebrow) {
+  max-width: 460px;
+  margin-top: 22px;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+.diary-stamp {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 132px;
+  height: 132px;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.88);
+  text-transform: uppercase;
+  backdrop-filter: blur(16px);
+  transform: rotate(-8deg);
+}
+
+.diary-stamp span,
+.diary-stamp strong {
+  display: block;
+  text-align: center;
+}
+
+.diary-stamp span {
+  font-size: 26px;
+  font-weight: 900;
+}
+
+.diary-stamp strong {
+  font-size: 12px;
+  color: #ffd1d6;
+}
+
+.diary-gate {
+  display: grid;
+  place-items: center;
+  min-height: 420px;
+  padding: 30px 0;
+}
+
+.diary-lock {
+  width: min(100%, 520px);
+  padding: 32px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.58)),
+    linear-gradient(90deg, rgba(168, 56, 68, 0.08), rgba(29, 127, 140, 0.1));
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(20px);
+}
+
+.dark .diary-lock {
+  background:
+    linear-gradient(145deg, rgba(21, 29, 34, 0.86), rgba(21, 29, 34, 0.58)),
+    linear-gradient(90deg, rgba(255, 150, 160, 0.08), rgba(124, 215, 229, 0.1));
+}
+
+.diary-lock h2 {
+  margin: 0;
+  font-family: var(--font-title);
+  font-size: clamp(34px, 4.2vw, 52px);
+  font-weight: 600;
+  line-height: 1.12;
+}
+
+.diary-lock p:not(.eyebrow),
+.diary-lock small,
+.diary-note,
+.diary-empty {
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.diary-lock label,
+.diary-compose label {
+  display: grid;
+  gap: 8px;
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.diary-lock input,
+.diary-compose input,
+.diary-compose textarea {
+  padding: 13px 14px;
+}
+
+.diary-lock button {
+  width: 100%;
+  margin-top: 18px;
+}
+
+.diary-lock small {
+  display: block;
+  margin-top: 12px;
+}
+
+.diary-room {
+  display: grid;
+  grid-template-columns: minmax(340px, 0.78fr) minmax(0, 1.22fr);
+  gap: 24px;
+  align-items: start;
+  margin-top: 28px;
+}
+
+.diary-compose,
+.diary-entry,
+.diary-empty {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+}
+
+.diary-compose {
+  position: sticky;
+  top: 98px;
+  padding: 24px;
+}
+
+.diary-compose .section-head h2 {
+  font-family: var(--font-title);
+  font-size: clamp(30px, 4vw, 46px);
+  font-weight: 600;
+  line-height: 1.05;
+}
+
+.mood-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.mood-picker button {
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.42);
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.mood-picker button.active,
+.mood-picker button:hover {
+  border-color: color-mix(in srgb, var(--accent) 54%, transparent);
+  background: color-mix(in srgb, var(--accent) 13%, transparent);
+  color: var(--accent);
+}
+
+.diary-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.diary-actions button {
+  flex: 1 1 150px;
+}
+
+.diary-list {
+  display: grid;
+  gap: 14px;
+}
+
+.diary-entry {
+  padding: 20px;
+}
+
+.diary-entry > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.diary-entry > div span {
+  color: var(--accent);
+  font-weight: 850;
+}
+
+.diary-entry h3 {
+  margin: 12px 0 8px;
+  font-family: var(--font-title);
+  font-size: 24px;
+  font-weight: 620;
+}
+
+.diary-entry p {
+  margin: 0;
+  color: color-mix(in srgb, var(--text) 84%, var(--muted));
+  line-height: 1.9;
+  white-space: normal;
+}
+
+.text-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  padding: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.text-button:hover {
+  color: var(--accent);
+}
+
+.diary-empty {
+  padding: 22px;
 }
 
 .about-layout {
@@ -1174,14 +1707,16 @@ svg {
 
 @media (max-width: 1080px) {
   .content-grid,
-  .archive-layout {
+  .archive-layout,
+  .diary-room {
     grid-template-columns: 1fr;
   }
 
   .profile-panel,
   .side-stack,
   .filter-panel,
-  .article-aside {
+  .article-aside,
+  .diary-compose {
     position: static;
   }
 
@@ -1253,10 +1788,18 @@ svg {
     padding-right: 18px;
   }
 
+  .hero-film-frame {
+    display: none;
+  }
+
   .post-card.featured,
   .article-hero,
   .about-hero,
   .about-layout,
+  .letter-mood,
+  .site-runtime,
+  .diary-hero,
+  .diary-room,
   .milestones > div {
     grid-template-columns: 1fr;
   }
@@ -1266,6 +1809,16 @@ svg {
   .gallery-grid,
   .showcase-strip {
     grid-template-columns: 1fr;
+  }
+
+  .diary-hero {
+    min-height: 320px;
+    padding: 28px;
+  }
+
+  .diary-stamp {
+    width: 104px;
+    height: 104px;
   }
 
   .article-cover-wrap img {
@@ -1283,6 +1836,14 @@ svg {
   .about-hero img {
     width: 150px;
     height: 150px;
+  }
+
+  .letter-mood {
+    padding: 18px;
+  }
+
+  .letter-stills img:nth-child(2) {
+    transform: none;
   }
 
   .site-footer {
@@ -1306,6 +1867,10 @@ svg {
   .gallery-grid,
   .about-hero,
   .about-layout,
+  .site-runtime,
+  .diary-hero,
+  .diary-gate,
+  .diary-room,
   .milestones,
   .related-posts,
   .site-footer {
@@ -1315,8 +1880,17 @@ svg {
   .hero h1,
   .page-hero h1,
   .about-hero h1,
-  .article-hero h1 {
+  .article-hero h1,
+  .diary-hero h1 {
     font-size: 42px;
+  }
+
+  .diary-lock {
+    padding: 22px;
+  }
+
+  .diary-stamp {
+    display: none;
   }
 
   .hero-actions a {
