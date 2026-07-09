@@ -128,7 +128,6 @@ function renderHeader() {
   return `
     <header class="site-header">
       <a class="brand" href="index.html" aria-label="His-Smile home">
-        <span class="brand-mark">H</span>
         <span>
           <strong>${data.site.name}</strong>
           <small>${data.site.alias}</small>
