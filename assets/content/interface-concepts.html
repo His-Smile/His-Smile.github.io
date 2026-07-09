@@ -1,0 +1,63 @@
+<h1 id="接口">接口</h1><h2 id="接口的定义">接口的定义</h2><p>当一个类中的所有的方法都是抽象方法的时候，就可以将其定义为接口，接口也是一种引用数据类型，比抽象类更加的抽象</p>
+<h5 id="接口存在的两个重要的意义">接口存在的两个重要的意义</h5><p>​	1.规则的定义</p>
+<p>​	2.程序的扩展性</p>
+<p><strong>接口用关键字interface来定义</strong></p>
+<p><strong>接口不能实例化</strong>,接口可以同时实现两个，这两个接口里面可以用相同的抽象方法，因为实现只有在实现类中</p>
+<h2 id="接口中的成员的特点-default-和static">接口中的成员的特点 default 和static</h2><p>1.接口中的成员变量，是默认用finall进行修饰的，要进行大写</p>
+<p>2.接口名.NUM也可成功调用 接口的成员变量默认被public static finall 修饰</p>
+<p>jdk8之后，<strong>允许接口定义非抽象方法，但是需要用关键字default进行修饰，这个方法就是默认方法</strong></p>
+<p>public default  void show(){} 这个时候，实现这个接口的不用强制实现这个方法但是，此接口实现类可以直接实例化之后调用这个方法。同时也可以重写，重写的实现类，重写默认方法，但是不能够加上default，<strong>可是如果遇到实现多个类，同一个方法，逻辑冲突</strong>，就必须进行重写</p>
+<p><strong>接口的默认方法所存在的作用就是解决接口升级，如果有需要在接口里面单独写方法的时候，保证丰富接口功能的同时不需要修改子类方法</strong></p>
+<p>**从jdk9开始，接口类可以使用private私有成员方法 ** private void show()   private static void show()</p>
+<p>静态方法只能够调用静态的</p>
+<p><img src="https://cdn.jsdelivr.net/gh/His-Smile/pic_bed/img/202504091631852.png"
+                      alt="image-20250409162934675"
+                ></p>
+<p>如果继承的和实现的，用相同的方法，优先使用继承的</p>
+<p><strong>接口和接口之间是继承关系，只有类可以实现，接口可以多继承</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/His-Smile/pic_bed/img/202504091641678.png"
+                      alt="image-20250409164150955"
+                ></p>
+<h1 id="多态">多态</h1><p>同一个对象，在不同时刻表现出来的不同的形态，</p>
+<p>多态的前提和体现：</p>
+<p>​	有继承或者实现的关系</p>
+<p>​	有方法重写</p>
+<p>​	有父类引用指向子类对象</p>
+<p><strong>多态中，成员访问的特点</strong></p>
+<p>1.成员变量：编译和运行用的父类的，但是如果父类当中没有写这个值的话，代码在编译阶段就直接报错了</p>
+<p>​	<strong>编译期间看左边，运行看左边，就是父类</strong></p>
+<p>2.成员方法： <strong>编译期间看左边（父类），运行期间看右边（子类）</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/His-Smile/pic_bed/img/202504101542753.png"
+                      alt="image-20250410154249646"
+                ></p>
+<h5 id="多态的转型：">多态的转型：</h5><p>1.向上转型 Fu &#x3D; new ZI</p>
+<p>2.向下转型 ZI z &#x3D; (ZI) Fu</p>
+<p>**ClassCastException ** （类型转换异常） 父类引用指向的子类对象。在父类强转之后，再引用另外的子类的方法就会报错</p>
+<p><strong>避免出现强转的风险就用这个</strong> </p>
+<h5 id="关键字-instanceof-类型">关键字 instanceof 类型</h5><p>通俗的理解：判断关键字左边的变量，是否是右边变量的类型，返回boolean类型的结果 </p>
+<h5 id="创建内部类对象的格式">创建内部类对象的格式</h5><p> 外部类名.内部类 对象名 &#x3D; new 外部类对象（）.new 内部类对象（）；</p>
+<h5 id="内部类">内部类</h5><p>成员内部类 ： 外部类名.内部类 对象名 &#x3D; new 外部类对象（）.new 内部类对象（）；</p>
+<p>静态的成员内部类：外部类名.内部类 对象名 &#x3D; new 外部类名.内部类名（）；</p>
+<p>局部内部类：只能够再方法中，创建对象并访问<img src="https://cdn.jsdelivr.net/gh/His-Smile/pic_bed/img/202504102313011.png"
+                      alt="image-20250410231349219"
+                ></p>
+<p>匿名内部类就是匿名的局部内部类</p>
+<p><strong>平常使用接口调用方法的步骤</strong></p>
+<p>1.创建实现类，通过imp关键字</p>
+<p>2.重写方法</p>
+<p>3.创建实现类对象</p>
+<p>4.调用重写后的方法</p>
+<p><strong>通过匿名内部类只需要集合成一步</strong></p>
+<p>前提：需要存在一个类&#x2F;接口</p>
+<p>格式： new 类名 &#x2F; 接口名（）{ 重写方法}  匿名内部类是将 继承&#x2F;实现，方法重写，创建对象，放在了一步</p>
+<p><strong>当方法的形式参数是一个接口或者是抽象类的时候可以将匿名内部类作为实现参数进行传递</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/His-Smile/pic_bed/img/202504121953350.png"
+                      alt="image-20250412195319684"
+                ></p>
+<p>Object的enqual方法底层也是用的&#x3D;&#x3D;号，所以必须要重写</p>
+<p>StringBuilder的没有enqual的</p>
+<h5 id="Objects的方法">Objects的方法</h5><p>Objects.toString(s,”如果前面的为null就打印我了”)</p>
+<p>bigdecimal 要进行精确的运算，需要转化为String,  BigDecimal ad &#x3D; new BigDecimal(“1”)  加法 add 减法 subtract 乘法 multiply  除法 divide(对象，精确几位，舍入模式)</p>
+<p><strong>增加字段的时候一定要看清楚前端从哪里取出来的</strong></p>
+
+        </div>

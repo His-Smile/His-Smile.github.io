@@ -1,0 +1,54 @@
+<h2 id="代码问题">代码问题</h2><h4 id="1label标签">1label标签</h4><p>label标签</p>
+<p>label1: 是一个标签，用于标记代码中的位置。<br>在这个上下文中，它用于标记 while 循环，以便可以在需要时通过 <strong>break label1;</strong> 语句直接退出整个循环。<br>这种用法有助于更灵活地控制复杂的循环结构，特别是在多层嵌套的情况下.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">label1:</span><br><span class="line">while (rowIterator.hasNext()) &#123;</span><br><span class="line">    partsBrandVo = new PartsBrandVo();</span><br><span class="line">    partsBrandVo.setDataSource(&quot;3&quot;);</span><br><span class="line">    partsBrandVo.setEffectiveFlag(&quot;1&quot;);</span><br><span class="line">    partsBrandVo.setCreateDate(new Date());</span><br><span class="line">    partsBrandVo.setCertificateFlag(&quot;0&quot;);</span><br><span class="line">    row = rowIterator.next();</span><br><span class="line">    log.info(&quot;Processing row: &quot; + row.getRowNum());</span><br><span class="line">    if (row.getRowNum() == 0)&#123;</span><br><span class="line">        continue;</span><br><span class="line">    &#125;</span><br><span class="line">    // 遍历每一列</span><br><span class="line">    Iterator&lt;Cell&gt; cellIterator = row.cellIterator();</span><br><span class="line">    Cell cell = null;</span><br><span class="line">    int colIdx = 0;</span><br><span class="line">    int rowIdx = row.getRowNum();</span><br><span class="line"></span><br><span class="line">    if (row.getCell(2).getCellType() == CellType.BLANK)  break label1;</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="2-String-join">2.String.join</h4><p>   String result &#x3D; String.join(“, “, “apple”, “banana”, “cherry”);<br>   System.out.println(result); &#x2F;&#x2F; 输出: apple, banana, cherry</p>
+<p>如果 elements 中包含 null 值，String.join 会忽略这些 null 值，不会抛出异常。</p>
+<p>   String result &#x3D; String.join(“, “, “apple”, null, “cherry”);<br>   System.out.println(result); &#x2F;&#x2F; 输出: apple, cherry</p>
+<p>分隔符可以为空字符串 (“”)，但不能为 null，否则会抛出 NullPointerException。<br>如果 elements 为 null 或者是空数组&#x2F;列表，则返回空字符串 (“”)。</p>
+<h4 id="3">3.</h4><h5 id="VARCHAR">VARCHAR</h5><p>存储容量:<br>VAR-CHAR(n): 其中 n 是字符的最大长度，范围通常是 1 到 65,535（具体范围取决于数据库系统）。<br>例如，VARCHAR(255) 可以存储最多 255 个字符。<br>存储方式:<br>VARCHAR 只存储实际输入的字符数加上一个额外的字节（或两个字节，具体取决于数据库系统）来记录字符串的长度。<br>这意味着 VARCHAR 是<strong>可变长度</strong>的，存储效率较高，因为不会浪费空间。<br>使用场景:<br>适用于存储长度可变但相对较小的字符串，例如用户名、地址、描述等。</p>
+<h5 id="TEXT">TEXT</h5><p>存储容量:<br>TEXT: 存储容量通常非常大，具体取决于数据库系统。<br>例如，在 MySQL 中，</p>
+<p>TEXT 类型的最大长度为 65,535 字节（64 KB）</p>
+<p> LONGTEXT 可以存储最多 4,294,967,295 字节（4 GB）。<br>存储方式:<br>TEXT 类型通常存储在表之外的单独存储区域，<strong>表中只存储指向这些数据的指针。</strong><br>这意味着 TEXT 是<strong>不可变长度的，存储效率较低，因为需要额外的存储空间来管理指针。</strong><br>使用场景:<br>适用于存储非常长的文本数据，例如文章、日志、文档等。</p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>VARCHAR</th>
+<th>TEXT</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>存储容量</td>
+<td>可变长度,最大为65535字符</td>
+<td>可变长度64kb到4G</td>
+</tr>
+<tr>
+<td>存储方式</td>
+<td>存储实际字节数和长度字节</td>
+<td>存储指针,实际数据存储在单独区域</td>
+</tr>
+<tr>
+<td>存储效率</td>
+<td>高,不浪费空间,随着内容改变</td>
+<td>低,需要额外的存储指针</td>
+</tr>
+<tr>
+<td>使用场景</td>
+<td>短文本,用户名,地址等</td>
+<td>长文本,文章,日志,图片</td>
+</tr>
+</tbody></table>
+<p>有效,不信任感,平台面向人工要比面向客户落地实现效果要好</p>
+<p>主要是应用于to C 还是 to B ,面相业务,还是面向客户来进行?</p>
+<p>对于集约化是从烟囱化转向还</p>
+<p>对于数据安全的保护,</p>
+<p>chatgpt用了多少token12万一和4-5万个h100y以上的显卡</p>
+<p>但是大语言模型不是什么都能够回答出来的,要加rag</p>
+<p>1.问题没问清楚 prompt</p>
+<p>2.缺乏相关的知识 RAG(重要方向)</p>
+<p>3.能力不足</p>
+<p>mysql存储数据,向量数据库存储详向量</p>
+<p>RAG的原理,让ai大模型变得更加聪明</p>
+
+        </div>

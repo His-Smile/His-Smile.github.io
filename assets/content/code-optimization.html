@@ -1,0 +1,20 @@
+<h1 id="空指针报错">空指针报错</h1><p><strong>“1”.equals</strong>（xxx）和<strong>（xxx）.enquals”1”</strong></p>
+<p>这两种写法在逻辑上是等价的，都会根据 jcShopEnquiry.getDataSource() 的值是否等于 “1” 来设置 request 的 enquiryType 属性为 “1” 或 “2”。但它们的区别在于代码的可读性和潜在的空指针风险：</p>
+<ol>
+<li>“1”.equals(jcShopEnquiry.getDataSource())<br>  优点：这种写法可以避免 jcShopEnquiry.getDataSource() 为 null 时抛出 NullPointerException，因为 “1” 是一个常量，不会为 null。<br>  推荐场景：当 jcShopEnquiry.getDataSource() 可能为 null 时，推荐使用这种写法。</li>
+<li>jcShopEnquiry.getDataSource().equals(“1”)<br>  缺点：如果 jcShopEnquiry.getDataSource() 为 null，会抛出 NullPointerException。<br>  推荐场景：当可以确保 jcShopEnquiry.getDataSource() 不会为 null 时，可以使用这种写法。<br>  总结<br>  如果 jcShopEnquiry.getDataSource() 可能为 null，使用第一种写法更安全。<br>  如果可以确保 jcShopEnquiry.getDataSource() 不为 null，两种写法都可以，但第一种写法更通用。</li>
+</ol>
+<h2 id="关于date的格式的小贴士">关于date的格式的小贴士</h2><p>如果用的fastJson的话，就不能够对jsonFormat的注解进行正确转化，要使用jsonFiled,如果想要用前者，要用JsonUtil进行转化json</p>
+<h2 id="学习-快速排序">学习 快速排序</h2><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">private static void quiteSort(int[] arr, int left, int right) &#123;</span><br><span class="line">       if (left &gt; right) &#123;</span><br><span class="line">           return;</span><br><span class="line">       &#125;</span><br><span class="line">       int left0 = left;</span><br><span class="line">       int right0= right;</span><br><span class="line">       //基准数字</span><br><span class="line">       int baseNum = arr[left];</span><br><span class="line"></span><br><span class="line">       while (left != right) &#123;</span><br><span class="line">           while (left &lt; right &amp;&amp; arr[right] &gt;= baseNum) &#123;</span><br><span class="line">               right--;</span><br><span class="line">           &#125;</span><br><span class="line">           while (left &lt; right &amp;&amp; arr[left] &lt;= baseNum) &#123;</span><br><span class="line">               left++;</span><br><span class="line">           &#125;</span><br><span class="line">           System.out.println(&quot;left:&quot; + left + &quot; right:&quot; + right);</span><br><span class="line">           //交换两个位置</span><br><span class="line">          int temp = arr[left];</span><br><span class="line">           arr[left] = arr[right];</span><br><span class="line">           arr[right] = temp;</span><br><span class="line">       &#125;</span><br><span class="line">       // 基准值归位</span><br><span class="line">       arr[left0] = arr[left];</span><br><span class="line">       arr[left] = baseNum;</span><br><span class="line">       quiteSort(arr, left0, left - 1);</span><br><span class="line">       quiteSort(arr, left + 1, right0);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></div>
+
+
+
+<p>自定义异常类，需要继承运行时异常RuntimeException，建立无参和带参构造，再需要的时候扔出异常并且捕获</p>
+<p>stream 单列集合   .stream </p>
+<p>​		双列集合 HashMap&lt;String,Integer&gt; .keySet  获取键</p>
+<p>​				HashMap&lt;String,Integer&gt; .entrySet 获取键值对</p>
+<p>​		数组： Arrays.stream(arr).forEach()</p>
+<p>​		同种数据类型的多个数据 Stream.Of(1,2,3,4,5,6,7 ).forEach()</p>
+<p>由于predicate接口之中，只有一个抽象方法，所以，我们可以使用lambda表达式的形式来简化  </p>
+
+        </div>

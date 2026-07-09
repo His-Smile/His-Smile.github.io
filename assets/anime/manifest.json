@@ -1,0 +1,36 @@
+{
+  "base": "https://cdn.jsdelivr.net/gh/His-Smile/pic_bed/anime/",
+  "usage": "Anime cover pool for His-Smile blog. Add new images here, then add filenames to this manifest and the front-end cover pool.",
+  "images": [
+    {
+      "file": "hero-character.jpg",
+      "style": "character",
+      "suggested": ["work", "code"]
+    },
+    {
+      "file": "twilight-girl.png",
+      "style": "character",
+      "suggested": ["code", "life"]
+    },
+    {
+      "file": "lake-pier.jpg",
+      "style": "landscape",
+      "suggested": ["java", "blog", "picbed"]
+    },
+    {
+      "file": "lake-pier-blue.jpg",
+      "style": "landscape",
+      "suggested": ["tools", "work"]
+    },
+    {
+      "file": "ink-lotus.png",
+      "style": "ink",
+      "suggested": ["java", "picbed"]
+    },
+    {
+      "file": "villa-render.webp",
+      "style": "scene",
+      "suggested": ["tools"]
+    }
+  ]
+}
