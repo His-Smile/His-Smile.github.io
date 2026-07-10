@@ -930,29 +930,6 @@ svg {
   gap: 18px;
 }
 
-.showcase-strip {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
-  margin-bottom: 18px;
-}
-
-.showcase-strip span {
-  min-height: 44px;
-  display: grid;
-  place-items: center;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.44);
-  color: var(--muted);
-  font-weight: 800;
-  backdrop-filter: blur(16px);
-}
-
-.dark .showcase-strip span {
-  background: rgba(29, 29, 26, 0.44);
-}
-
 .side-block h2,
 .filter-panel h2 {
   display: flex;
@@ -1844,8 +1821,7 @@ svg {
 
   .post-grid,
   .side-stack,
-  .gallery-grid,
-  .showcase-strip {
+  .gallery-grid {
     grid-template-columns: 1fr;
   }
 

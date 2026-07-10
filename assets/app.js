@@ -280,12 +280,6 @@ function renderHome() {
         </aside>
 
         <section class="feed-column">
-          <div class="showcase-strip reveal">
-            <span>Java</span>
-            <span>Database</span>
-            <span>PicBed</span>
-            <span>Daily Notes</span>
-          </div>
           <div class="section-head reveal">
             <p class="eyebrow">Latest Letters</p>
             <h2>最近写下的内容</h2>
