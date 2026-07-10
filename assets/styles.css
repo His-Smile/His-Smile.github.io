@@ -539,66 +539,44 @@ svg {
 
 .letter-mood {
   display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(280px, 430px);
-  gap: 34px;
-  align-items: center;
-  margin-bottom: 28px;
-  padding: 30px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(244, 247, 248, 0.58)),
-    linear-gradient(90deg, rgba(168, 56, 68, 0.08), rgba(29, 127, 140, 0.1));
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(20px);
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 24px;
+  align-items: end;
+  margin-bottom: 24px;
+  padding: 0 0 22px;
+  border-bottom: 1px solid var(--line);
 }
 
 .dark .letter-mood {
-  background:
-    linear-gradient(135deg, rgba(21, 29, 34, 0.76), rgba(15, 21, 25, 0.62)),
-    linear-gradient(90deg, rgba(255, 150, 160, 0.1), rgba(124, 215, 229, 0.1));
+  border-color: color-mix(in srgb, var(--line) 80%, transparent);
 }
 
 .letter-copy h2 {
   max-width: 620px;
   margin: 0;
   font-family: var(--font-title);
-  font-size: clamp(28px, 3.2vw, 44px);
+  font-size: clamp(26px, 3vw, 38px);
   font-weight: 580;
   line-height: 1.18;
 }
 
-.letter-copy p:not(.eyebrow) {
-  max-width: 660px;
-  margin: 20px 0 0;
+.letter-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.letter-tags span {
+  min-height: 34px;
+  padding: 7px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
   color: var(--muted);
-  font-size: 17px;
-  line-height: 1.9;
-}
-
-.letter-stills {
-  display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(120px, 0.62fr);
-  gap: 14px;
-  align-items: end;
-}
-
-.letter-stills img {
-  width: 100%;
-  object-fit: cover;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-}
-
-.letter-stills img:first-child {
-  aspect-ratio: 4 / 3;
-  filter: saturate(0.82) contrast(1.03);
-}
-
-.letter-stills img:nth-child(2) {
-  aspect-ratio: 2 / 3;
-  border: 6px solid rgba(255, 255, 255, 0.72);
-  transform: translateY(18px) rotate(2deg);
+  font-size: 13px;
+  font-weight: 800;
+  backdrop-filter: blur(14px);
 }
 
 .site-runtime {
@@ -1910,11 +1888,11 @@ svg {
   }
 
   .letter-mood {
-    padding: 18px;
+    align-items: start;
   }
 
-  .letter-stills img:nth-child(2) {
-    transform: none;
+  .letter-tags {
+    justify-content: flex-start;
   }
 
   .site-footer {

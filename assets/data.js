@@ -4,7 +4,7 @@ const ANIME_BACKDROP_BASE = "https://cdn.jsdelivr.net/gh/His-Smile/pic_bed/anime
 
 window.BLOG_DATA = {
   site: {
-    name: "我的情书",
+    name: "His Smile",
     author: "张宇博",
     alias: "His-Smile",
     since: "2024-10-17",

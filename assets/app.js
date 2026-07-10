@@ -247,7 +247,7 @@ function renderHome() {
         <img src="${data.site.filmPoster}" alt="电影《情书》海报">
         <figcaption>
           <span>Love Letter · 1995</span>
-          <strong>所以这个站叫「我的情书」</strong>
+          <strong>His Smile</strong>
         </figcaption>
       </figure>
       <a class="hero-next" href="#feed" aria-label="查看文章">${icon("chevron-down")}</a>
@@ -257,13 +257,14 @@ function renderHome() {
       <div class="blur-backdrop" aria-hidden="true"></div>
       <section class="letter-mood reveal">
         <div class="letter-copy">
-          <p class="eyebrow">写在开头</p>
-          <h2>一些记录，慢慢留下来</h2>
-          <p>《情书》里最动人的地方，是很多话隔了很久才抵达。我把学习和开发里的问题写在这里，像把一张张旧书卡夹回书里，等以后再翻开</p>
+          <p class="eyebrow">Notes</p>
+          <h2>把最近的记录放在这里</h2>
         </div>
-        <div class="letter-stills">
-          <img src="${data.site.filmStill}" alt="电影《情书》雪景剧照">
-          <img src="${data.site.filmPoster}" alt="电影《情书》海报">
+        <div class="letter-tags" aria-label="内容方向">
+          <span>Java</span>
+          <span>Database</span>
+          <span>PicBed</span>
+          <span>Daily</span>
         </div>
       </section>
       <div class="content-grid">
@@ -314,7 +315,7 @@ function renderHome() {
       </div>
 
       <section class="site-runtime reveal">
-        <strong>我的情书</strong>
+        <strong>His Smile</strong>
         <span>© 2026</span>
         <span>建站 <b data-runtime-days>0</b> 天 <b data-runtime-hours>0</b> 时 <b data-runtime-minutes>0</b> 分 <b data-runtime-seconds>0</b> 秒</span>
         <span>${icon("eye")} <b>10335</b> 访问</span>
