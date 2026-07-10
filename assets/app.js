@@ -257,7 +257,7 @@ function renderHome() {
       <section class="letter-mood reveal">
         <div class="letter-copy">
           <p class="eyebrow">Notes</p>
-          <h2>把最近的记录放在这里</h2>
+          <h2>一些记录，慢慢留下</h2>
         </div>
         <div class="letter-tags" aria-label="内容方向">
           <span>Java</span>
