@@ -234,7 +234,6 @@ function renderHome() {
       <div class="hero-content reveal">
         <p class="eyebrow">Love Letter Journal</p>
         <h1>${data.site.name}</h1>
-        <p>${data.site.description}</p>
         <div class="typewriter" aria-live="polite">
           <span data-typewriter></span><i></i>
         </div>
