@@ -685,12 +685,6 @@ async function saveDiaryEntryToCloud(entry) {
   return true;
 }
 
-async function deleteDiaryEntryFromCloud(id) {
-  if (!diarySyncReady()) return false;
-  await diaryApi(`/diary/${encodeURIComponent(id)}`, { method: "DELETE" });
-  return true;
-}
-
 async function pullDiaryEntriesFromCloud() {
   const payload = await diaryApi("/diary");
   return mergeDiaryEntries(payload.entries || []);
@@ -930,18 +924,14 @@ function bindDiaryEntryToggles() {
 
 function bindDiaryDelete() {
   document.querySelectorAll("[data-diary-delete]").forEach((button) => {
-    button.addEventListener("click", async () => {
+    button.addEventListener("click", () => {
       const entries = readDiaryEntries().filter((entry) => entry.id !== button.dataset.diaryDelete);
       writeDiaryEntries(entries);
       document.querySelector("[data-diary-list]").innerHTML = diaryEntriesMarkup();
       bindDiaryEntries();
       if (window.lucide) window.lucide.createIcons({ strokeWidth: 1.8 });
-      try {
-        await deleteDiaryEntryFromCloud(button.dataset.diaryDelete);
-      } catch {
-        const note = document.querySelector("[data-diary-note]");
-        if (note) note.textContent = "本地已删除，云端删除失败时可以稍后再同步。";
-      }
+      const note = document.querySelector("[data-diary-note]");
+      if (note) note.textContent = "已从本地移除，云端仍会保留。";
     });
   });
 }
