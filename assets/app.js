@@ -514,6 +514,10 @@ const DIARY_ENTRIES_KEY = "his-smile-diary-entries";
 const DIARY_PASSWORD_HASH_KEY = "his-smile-diary-password-hash";
 const DIARY_DEFAULT_API_URL = "https://his-smile-diary-api.13233000113.workers.dev";
 const DIARY_SYNC_TOKEN = "hs_2V9qL8mN4xR7pA1z_20010117_letter";
+const DIARY_CLOUD_READ_PASSWORD_HASHES = [
+  "9570c8b67b6765a797b59fb44eb02745a0bad4f4a37c610c15c86fc76a738c1d",
+  "297e32fc5feed606839b66890def6024bb90152be9375b0da3e73b1a367d9185"
+];
 
 async function sha256Hex(value) {
   const bytes = new TextEncoder().encode(value);
@@ -709,6 +713,10 @@ function renderDiary() {
               <strong data-diary-sync-state>自动同步已开启</strong>
             </div>
             <p>云端地址和同步口令已经固定在站点里，不需要再手动填写。</p>
+            <label>
+              <span>云端读取密码</span>
+              <input type="password" data-diary-cloud-password autocomplete="off" placeholder="读取云端前输入">
+            </label>
             <div class="diary-sync-actions">
               <button class="secondary-action calm" data-diary-cloud-pull type="button">${icon("cloud-download")}读取云端</button>
               <button class="secondary-action calm" data-diary-cloud-push type="button">${icon("cloud-upload")}上传本地</button>
@@ -855,12 +863,22 @@ function bindDiarySync() {
   };
 
   document.querySelector("[data-diary-cloud-pull]")?.addEventListener("click", async () => {
+    const cloudPasswordInput = document.querySelector("[data-diary-cloud-password]");
+    const cloudPasswordHash = await sha256Hex(cloudPasswordInput.value);
+    if (!DIARY_CLOUD_READ_PASSWORD_HASHES.includes(cloudPasswordHash)) {
+      note.textContent = "云端读取密码不对。";
+      cloudPasswordInput.value = "";
+      cloudPasswordInput.focus();
+      return;
+    }
+
     note.textContent = "正在读取云端...";
     try {
       const entries = await pullDiaryEntriesFromCloud();
       document.querySelector("[data-diary-list]").innerHTML = diaryEntriesMarkup();
       bindDiaryDelete();
       refreshState();
+      cloudPasswordInput.value = "";
       note.textContent = `已从云端读取 ${entries.length} 条日记。`;
       if (window.lucide) window.lucide.createIcons({ strokeWidth: 1.8 });
     } catch {
