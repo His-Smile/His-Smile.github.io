@@ -130,7 +130,6 @@ function renderHeader() {
       <a class="brand" href="index.html" aria-label="His-Smile home">
         <span>
           <strong>${data.site.name}</strong>
-          <small>${data.site.alias}</small>
         </span>
       </a>
       <nav class="nav-links" aria-label="主导航">
