@@ -1548,6 +1548,45 @@ svg {
   flex: 1 1 150px;
 }
 
+.diary-sync {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+  padding: 16px;
+  border: 1px solid color-mix(in srgb, var(--line) 78%, transparent);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--surface) 72%, transparent);
+}
+
+.diary-sync > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.diary-sync strong {
+  color: var(--accent);
+}
+
+.diary-sync label {
+  margin-top: 0;
+}
+
+.diary-sync-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.diary-sync-actions button {
+  width: 100%;
+  min-height: 40px;
+  padding-inline: 10px;
+  font-size: 13px;
+}
+
 .diary-list {
   display: grid;
   gap: 14px;
@@ -1880,6 +1919,10 @@ svg {
 
   .diary-stamp {
     display: none;
+  }
+
+  .diary-sync-actions {
+    grid-template-columns: 1fr;
   }
 
   .hero-actions a {

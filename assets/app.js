@@ -511,6 +511,9 @@ function renderAbout() {
 
 const DIARY_ACCESS_KEY = "his-smile-diary-access";
 const DIARY_ENTRIES_KEY = "his-smile-diary-entries";
+const DIARY_API_URL_KEY = "his-smile-diary-api-url";
+const DIARY_SYNC_TOKEN_KEY = "his-smile-diary-sync-token";
+const DIARY_DEFAULT_API_URL = "https://his-smile-diary-api.13233000113.workers.dev";
 
 async function sha256Hex(value) {
   const bytes = new TextEncoder().encode(value);
@@ -533,6 +536,95 @@ function readDiaryEntries() {
 
 function writeDiaryEntries(entries) {
   localStorage.setItem(DIARY_ENTRIES_KEY, JSON.stringify(entries));
+}
+
+function diarySyncConfig() {
+  return {
+    apiUrl: (localStorage.getItem(DIARY_API_URL_KEY) || DIARY_DEFAULT_API_URL).replace(/\/+$/, ""),
+    token: localStorage.getItem(DIARY_SYNC_TOKEN_KEY) || ""
+  };
+}
+
+function saveDiarySyncConfig(apiUrl, token) {
+  localStorage.setItem(DIARY_API_URL_KEY, apiUrl.replace(/\/+$/, ""));
+  if (token) localStorage.setItem(DIARY_SYNC_TOKEN_KEY, token);
+}
+
+function diarySyncReady() {
+  const config = diarySyncConfig();
+  return Boolean(config.apiUrl && config.token);
+}
+
+function normalizeDiaryEntry(entry) {
+  return {
+    id: entry.id,
+    title: entry.title || "",
+    mood: entry.mood || "",
+    body: entry.body || "",
+    createdAt: entry.createdAt || entry.created_at || new Date().toISOString(),
+    updatedAt: entry.updatedAt || entry.updated_at || entry.createdAt || entry.created_at || new Date().toISOString()
+  };
+}
+
+function mergeDiaryEntries(incoming) {
+  const merged = new Map(readDiaryEntries().map((entry) => [entry.id, normalizeDiaryEntry(entry)]));
+  incoming.map(normalizeDiaryEntry).forEach((entry) => merged.set(entry.id, entry));
+  const entries = [...merged.values()].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  writeDiaryEntries(entries);
+  return entries;
+}
+
+async function diaryApi(path, options = {}) {
+  const config = diarySyncConfig();
+  if (!config.token) throw new Error("missing_token");
+  const response = await fetch(`${config.apiUrl}${path}`, {
+    ...options,
+    headers: {
+      "Authorization": `Bearer ${config.token}`,
+      "Content-Type": "application/json",
+      ...(options.headers || {})
+    }
+  });
+  const text = await response.text();
+  const payload = text ? JSON.parse(text) : {};
+  if (!response.ok) {
+    const error = new Error(payload.error || "request_failed");
+    error.status = response.status;
+    throw error;
+  }
+  return payload;
+}
+
+async function saveDiaryEntryToCloud(entry) {
+  if (!diarySyncReady()) return false;
+  await diaryApi("/diary", {
+    method: "POST",
+    body: JSON.stringify(normalizeDiaryEntry(entry))
+  });
+  return true;
+}
+
+async function deleteDiaryEntryFromCloud(id) {
+  if (!diarySyncReady()) return false;
+  await diaryApi(`/diary/${encodeURIComponent(id)}`, { method: "DELETE" });
+  return true;
+}
+
+async function pullDiaryEntriesFromCloud() {
+  const payload = await diaryApi("/diary");
+  return mergeDiaryEntries(payload.entries || []);
+}
+
+async function pushDiaryEntriesToCloud() {
+  const entries = readDiaryEntries().map(normalizeDiaryEntry);
+  for (const entry of entries) {
+    await diaryApi(`/diary/${encodeURIComponent(entry.id)}`, { method: "DELETE" });
+    await diaryApi("/diary", {
+      method: "POST",
+      body: JSON.stringify(entry)
+    });
+  }
+  return entries.length;
 }
 
 function formatDiaryDate(value) {
@@ -607,6 +699,25 @@ function renderDiary() {
             <button class="primary-action" data-diary-save>${icon("send")}保存</button>
             <button class="secondary-action calm" data-diary-lock>${icon("lock")}锁上</button>
           </div>
+          <section class="diary-sync">
+            <div>
+              <span>Cloudflare D1</span>
+              <strong data-diary-sync-state>${diarySyncReady() ? "已连接" : "本地保存"}</strong>
+            </div>
+            <label>
+              <span>Worker 地址</span>
+              <input data-diary-api-url value="${escapeHtml(diarySyncConfig().apiUrl)}" placeholder="https://...workers.dev">
+            </label>
+            <label>
+              <span>同步口令</span>
+              <input type="password" data-diary-sync-token value="${escapeHtml(diarySyncConfig().token)}" autocomplete="off" placeholder="SYNC_TOKEN">
+            </label>
+            <div class="diary-sync-actions">
+              <button class="secondary-action calm" data-diary-sync-save type="button">${icon("settings")}保存配置</button>
+              <button class="secondary-action calm" data-diary-cloud-pull type="button">${icon("cloud-download")}读取云端</button>
+              <button class="secondary-action calm" data-diary-cloud-push type="button">${icon("cloud-upload")}上传本地</button>
+            </div>
+          </section>
           <p class="diary-note" data-diary-note></p>
         </div>
         <div class="diary-list" data-diary-list>
@@ -660,7 +771,7 @@ function bindDiary(unlocked) {
     });
   });
 
-  document.querySelector("[data-diary-save]")?.addEventListener("click", () => {
+  document.querySelector("[data-diary-save]")?.addEventListener("click", async () => {
     const title = document.querySelector("[data-diary-title]").value.trim();
     const body = document.querySelector("[data-diary-body]").value.trim();
     const note = document.querySelector("[data-diary-note]");
@@ -669,20 +780,27 @@ function bindDiary(unlocked) {
       return;
     }
     const entries = readDiaryEntries();
-    entries.push({
+    const entry = {
       id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
       title,
       mood: selectedMood,
       body,
       createdAt: new Date().toISOString()
-    });
+    };
+    entries.push(entry);
     writeDiaryEntries(entries);
     document.querySelector("[data-diary-title]").value = "";
     document.querySelector("[data-diary-body]").value = "";
     document.querySelector("[data-diary-list]").innerHTML = diaryEntriesMarkup();
-    note.textContent = "保存好了。像把一张纸夹进了旧书里。";
+    note.textContent = "保存好了。";
     bindDiaryDelete();
     if (window.lucide) window.lucide.createIcons({ strokeWidth: 1.8 });
+    try {
+      const synced = await saveDiaryEntryToCloud(entry);
+      if (synced) note.textContent = "本地和云端都保存好了。";
+    } catch {
+      note.textContent = "本地已保存，云端暂时没有连上。";
+    }
   });
 
   document.querySelector("[data-diary-lock]")?.addEventListener("click", () => {
@@ -691,17 +809,68 @@ function bindDiary(unlocked) {
   });
 
   bindDiaryDelete();
+  bindDiarySync();
 }
 
 function bindDiaryDelete() {
   document.querySelectorAll("[data-diary-delete]").forEach((button) => {
-    button.addEventListener("click", () => {
+    button.addEventListener("click", async () => {
       const entries = readDiaryEntries().filter((entry) => entry.id !== button.dataset.diaryDelete);
       writeDiaryEntries(entries);
       document.querySelector("[data-diary-list]").innerHTML = diaryEntriesMarkup();
       bindDiaryDelete();
       if (window.lucide) window.lucide.createIcons({ strokeWidth: 1.8 });
+      try {
+        await deleteDiaryEntryFromCloud(button.dataset.diaryDelete);
+      } catch {
+        const note = document.querySelector("[data-diary-note]");
+        if (note) note.textContent = "本地已删除，云端删除失败时可以稍后再同步。";
+      }
     });
+  });
+}
+
+function bindDiarySync() {
+  const apiInput = document.querySelector("[data-diary-api-url]");
+  const tokenInput = document.querySelector("[data-diary-sync-token]");
+  const note = document.querySelector("[data-diary-note]");
+  const state = document.querySelector("[data-diary-sync-state]");
+
+  const refreshState = () => {
+    if (state) state.textContent = diarySyncReady() ? "已连接" : "本地保存";
+  };
+
+  document.querySelector("[data-diary-sync-save]")?.addEventListener("click", () => {
+    saveDiarySyncConfig(apiInput.value.trim() || DIARY_DEFAULT_API_URL, tokenInput.value.trim());
+    refreshState();
+    note.textContent = diarySyncReady() ? "云端配置已保存。" : "Worker 地址已保存，还需要填写同步口令。";
+  });
+
+  document.querySelector("[data-diary-cloud-pull]")?.addEventListener("click", async () => {
+    saveDiarySyncConfig(apiInput.value.trim() || DIARY_DEFAULT_API_URL, tokenInput.value.trim());
+    note.textContent = "正在读取云端...";
+    try {
+      const entries = await pullDiaryEntriesFromCloud();
+      document.querySelector("[data-diary-list]").innerHTML = diaryEntriesMarkup();
+      bindDiaryDelete();
+      refreshState();
+      note.textContent = `已从云端读取 ${entries.length} 条日记。`;
+      if (window.lucide) window.lucide.createIcons({ strokeWidth: 1.8 });
+    } catch {
+      note.textContent = "读取失败。检查 Worker 地址和同步口令。";
+    }
+  });
+
+  document.querySelector("[data-diary-cloud-push]")?.addEventListener("click", async () => {
+    saveDiarySyncConfig(apiInput.value.trim() || DIARY_DEFAULT_API_URL, tokenInput.value.trim());
+    note.textContent = "正在上传本地日记...";
+    try {
+      const count = await pushDiaryEntriesToCloud();
+      refreshState();
+      note.textContent = `已上传 ${count} 条本地日记。`;
+    } catch {
+      note.textContent = "上传失败。检查 Worker 地址和同步口令。";
+    }
   });
 }
 
