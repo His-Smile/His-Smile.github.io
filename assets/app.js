@@ -511,9 +511,9 @@ function renderAbout() {
 
 const DIARY_ACCESS_KEY = "his-smile-diary-access";
 const DIARY_ENTRIES_KEY = "his-smile-diary-entries";
-const DIARY_API_URL_KEY = "his-smile-diary-api-url";
-const DIARY_SYNC_TOKEN_KEY = "his-smile-diary-sync-token";
+const DIARY_PASSWORD_HASH_KEY = "his-smile-diary-password-hash";
 const DIARY_DEFAULT_API_URL = "https://his-smile-diary-api.13233000113.workers.dev";
+const DIARY_SYNC_TOKEN = "hs_2V9qL8mN4xR7pA1z_20010117_letter";
 
 async function sha256Hex(value) {
   const bytes = new TextEncoder().encode(value);
@@ -522,7 +522,16 @@ async function sha256Hex(value) {
 }
 
 function isDiaryUnlocked() {
-  return sessionStorage.getItem(DIARY_ACCESS_KEY) === data.diary.passwordHash;
+  return sessionStorage.getItem(DIARY_ACCESS_KEY) === currentDiaryPasswordHash();
+}
+
+function currentDiaryPasswordHash() {
+  return localStorage.getItem(DIARY_PASSWORD_HASH_KEY) || data.diary.passwordHash;
+}
+
+function updateDiaryPasswordHash(hash) {
+  localStorage.setItem(DIARY_PASSWORD_HASH_KEY, hash);
+  sessionStorage.setItem(DIARY_ACCESS_KEY, hash);
 }
 
 function readDiaryEntries() {
@@ -540,14 +549,9 @@ function writeDiaryEntries(entries) {
 
 function diarySyncConfig() {
   return {
-    apiUrl: (localStorage.getItem(DIARY_API_URL_KEY) || DIARY_DEFAULT_API_URL).replace(/\/+$/, ""),
-    token: localStorage.getItem(DIARY_SYNC_TOKEN_KEY) || ""
+    apiUrl: DIARY_DEFAULT_API_URL,
+    token: DIARY_SYNC_TOKEN
   };
-}
-
-function saveDiarySyncConfig(apiUrl, token) {
-  localStorage.setItem(DIARY_API_URL_KEY, apiUrl.replace(/\/+$/, ""));
-  if (token) localStorage.setItem(DIARY_SYNC_TOKEN_KEY, token);
 }
 
 function diarySyncReady() {
@@ -702,21 +706,32 @@ function renderDiary() {
           <section class="diary-sync">
             <div>
               <span>Cloudflare D1</span>
-              <strong data-diary-sync-state>${diarySyncReady() ? "已连接" : "本地保存"}</strong>
+              <strong data-diary-sync-state>自动同步已开启</strong>
             </div>
-            <label>
-              <span>Worker 地址</span>
-              <input data-diary-api-url value="${escapeHtml(diarySyncConfig().apiUrl)}" placeholder="https://...workers.dev">
-            </label>
-            <label>
-              <span>同步口令</span>
-              <input type="password" data-diary-sync-token value="${escapeHtml(diarySyncConfig().token)}" autocomplete="off" placeholder="SYNC_TOKEN">
-            </label>
+            <p>云端地址和同步口令已经固定在站点里，不需要再手动填写。</p>
             <div class="diary-sync-actions">
-              <button class="secondary-action calm" data-diary-sync-save type="button">${icon("settings")}保存配置</button>
               <button class="secondary-action calm" data-diary-cloud-pull type="button">${icon("cloud-download")}读取云端</button>
               <button class="secondary-action calm" data-diary-cloud-push type="button">${icon("cloud-upload")}上传本地</button>
             </div>
+          </section>
+          <section class="diary-password-panel">
+            <div>
+              <span>入口密码</span>
+              <strong>修改密码</strong>
+            </div>
+            <label>
+              <span>当前密码</span>
+              <input type="password" data-diary-old-password autocomplete="current-password">
+            </label>
+            <label>
+              <span>新密码</span>
+              <input type="password" data-diary-new-password autocomplete="new-password">
+            </label>
+            <label>
+              <span>确认新密码</span>
+              <input type="password" data-diary-confirm-password autocomplete="new-password">
+            </label>
+            <button class="secondary-action calm" data-diary-password-change type="button">${icon("key-round")}更新密码</button>
           </section>
           <p class="diary-note" data-diary-note></p>
         </div>
@@ -751,7 +766,7 @@ function bindDiary(unlocked) {
       const input = document.querySelector("[data-diary-password]");
       const message = document.querySelector("[data-diary-message]");
       const hash = await sha256Hex(input.value);
-      if (hash === data.diary.passwordHash) {
+      if (hash === currentDiaryPasswordHash()) {
         sessionStorage.setItem(DIARY_ACCESS_KEY, hash);
         renderDiary();
         return;
@@ -810,6 +825,7 @@ function bindDiary(unlocked) {
 
   bindDiaryDelete();
   bindDiarySync();
+  bindDiaryPasswordChange();
 }
 
 function bindDiaryDelete() {
@@ -831,23 +847,14 @@ function bindDiaryDelete() {
 }
 
 function bindDiarySync() {
-  const apiInput = document.querySelector("[data-diary-api-url]");
-  const tokenInput = document.querySelector("[data-diary-sync-token]");
   const note = document.querySelector("[data-diary-note]");
   const state = document.querySelector("[data-diary-sync-state]");
 
   const refreshState = () => {
-    if (state) state.textContent = diarySyncReady() ? "已连接" : "本地保存";
+    if (state) state.textContent = diarySyncReady() ? "自动同步已开启" : "本地保存";
   };
 
-  document.querySelector("[data-diary-sync-save]")?.addEventListener("click", () => {
-    saveDiarySyncConfig(apiInput.value.trim() || DIARY_DEFAULT_API_URL, tokenInput.value.trim());
-    refreshState();
-    note.textContent = diarySyncReady() ? "云端配置已保存。" : "Worker 地址已保存，还需要填写同步口令。";
-  });
-
   document.querySelector("[data-diary-cloud-pull]")?.addEventListener("click", async () => {
-    saveDiarySyncConfig(apiInput.value.trim() || DIARY_DEFAULT_API_URL, tokenInput.value.trim());
     note.textContent = "正在读取云端...";
     try {
       const entries = await pullDiaryEntriesFromCloud();
@@ -857,20 +864,54 @@ function bindDiarySync() {
       note.textContent = `已从云端读取 ${entries.length} 条日记。`;
       if (window.lucide) window.lucide.createIcons({ strokeWidth: 1.8 });
     } catch {
-      note.textContent = "读取失败。检查 Worker 地址和同步口令。";
+      note.textContent = "读取失败。稍后再试。";
     }
   });
 
   document.querySelector("[data-diary-cloud-push]")?.addEventListener("click", async () => {
-    saveDiarySyncConfig(apiInput.value.trim() || DIARY_DEFAULT_API_URL, tokenInput.value.trim());
     note.textContent = "正在上传本地日记...";
     try {
       const count = await pushDiaryEntriesToCloud();
       refreshState();
       note.textContent = `已上传 ${count} 条本地日记。`;
     } catch {
-      note.textContent = "上传失败。检查 Worker 地址和同步口令。";
+      note.textContent = "上传失败。稍后再试。";
     }
+  });
+}
+
+function bindDiaryPasswordChange() {
+  document.querySelector("[data-diary-password-change]")?.addEventListener("click", async () => {
+    const oldInput = document.querySelector("[data-diary-old-password]");
+    const newInput = document.querySelector("[data-diary-new-password]");
+    const confirmInput = document.querySelector("[data-diary-confirm-password]");
+    const note = document.querySelector("[data-diary-note]");
+    const oldHash = await sha256Hex(oldInput.value);
+
+    if (oldHash !== currentDiaryPasswordHash()) {
+      note.textContent = "当前密码不对。";
+      oldInput.focus();
+      return;
+    }
+
+    if (newInput.value.trim().length < 6) {
+      note.textContent = "新密码至少 6 位。";
+      newInput.focus();
+      return;
+    }
+
+    if (newInput.value !== confirmInput.value) {
+      note.textContent = "两次输入的新密码不一致。";
+      confirmInput.focus();
+      return;
+    }
+
+    const nextHash = await sha256Hex(newInput.value);
+    updateDiaryPasswordHash(nextHash);
+    oldInput.value = "";
+    newInput.value = "";
+    confirmInput.value = "";
+    note.textContent = "密码已更新。下次进入日记时使用新密码。";
   });
 }
 
