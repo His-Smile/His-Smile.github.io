@@ -793,7 +793,6 @@ function renderDiary() {
             </label>
             <div class="diary-tool-actions">
               <button class="secondary-action calm" data-diary-cloud-pull type="button">${icon("cloud-download")}读取云端</button>
-              <button class="secondary-action calm" data-diary-cloud-push type="button">${icon("cloud-upload")}上传本地</button>
               <button class="secondary-action calm" data-diary-password-toggle type="button" aria-expanded="false">${icon("key-round")}修改密码</button>
             </div>
             <div class="diary-password-panel" data-diary-password-panel hidden>
@@ -905,6 +904,7 @@ function bindDiary(unlocked) {
   bindDiaryEntries();
   bindDiarySync();
   bindDiaryPasswordChange();
+  autoUploadLocalDiaryEntries();
 }
 
 function bindDiaryEntries() {
@@ -946,6 +946,19 @@ function bindDiaryDelete() {
   });
 }
 
+async function autoUploadLocalDiaryEntries() {
+  const note = document.querySelector("[data-diary-note]");
+  const entries = readDiaryEntries();
+  if (!entries.length || !diarySyncReady()) return;
+
+  try {
+    const count = await pushDiaryEntriesToCloud();
+    if (note && count) note.textContent = `本地 ${count} 条日记已自动同步到云端。`;
+  } catch {
+    if (note && !note.textContent) note.textContent = "本地日记已保留，云端稍后会再同步。";
+  }
+}
+
 function bindDiarySync() {
   const note = document.querySelector("[data-diary-note]");
 
@@ -969,16 +982,6 @@ function bindDiarySync() {
       if (window.lucide) window.lucide.createIcons({ strokeWidth: 1.8 });
     } catch {
       note.textContent = "读取失败。稍后再试。";
-    }
-  });
-
-  document.querySelector("[data-diary-cloud-push]")?.addEventListener("click", async () => {
-    note.textContent = "正在上传本地日记...";
-    try {
-      const count = await pushDiaryEntriesToCloud();
-      note.textContent = `已上传 ${count} 条本地日记。`;
-    } catch {
-      note.textContent = "上传失败。稍后再试。";
     }
   });
 }
