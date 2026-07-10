@@ -646,15 +646,21 @@ function formatDiaryDate(value) {
 }
 
 function diaryEntryMarkup(entry) {
+  const id = escapeHtml(entry.id);
   return `
-    <article class="diary-entry" data-entry-id="${entry.id}">
+    <article class="diary-entry" data-entry-id="${id}">
       <div>
         <span>${escapeHtml(entry.mood)}</span>
         <time>${formatDiaryDate(entry.createdAt)}</time>
       </div>
       <h3>${escapeHtml(entry.title || "未命名的一天")}</h3>
-      <p>${escapeHtml(entry.body).replaceAll("\n", "<br>")}</p>
-      <button class="text-button" data-diary-delete="${entry.id}">${icon("trash-2")}删除</button>
+      <div class="diary-entry-body" data-diary-body-panel="${id}" hidden>
+        <p>${escapeHtml(entry.body).replaceAll("\n", "<br>")}</p>
+      </div>
+      <div class="diary-entry-actions">
+        <button class="text-button" data-diary-toggle="${id}" aria-expanded="false">${icon("eye")}查看内容</button>
+        <button class="text-button" data-diary-delete="${id}">${icon("trash-2")}删除</button>
+      </div>
     </article>
   `;
 }
@@ -816,7 +822,7 @@ function bindDiary(unlocked) {
     document.querySelector("[data-diary-body]").value = "";
     document.querySelector("[data-diary-list]").innerHTML = diaryEntriesMarkup();
     note.textContent = "保存好了。";
-    bindDiaryDelete();
+    bindDiaryEntries();
     if (window.lucide) window.lucide.createIcons({ strokeWidth: 1.8 });
     try {
       const synced = await saveDiaryEntryToCloud(entry);
@@ -831,9 +837,30 @@ function bindDiary(unlocked) {
     renderDiary();
   });
 
-  bindDiaryDelete();
+  bindDiaryEntries();
   bindDiarySync();
   bindDiaryPasswordChange();
+}
+
+function bindDiaryEntries() {
+  bindDiaryEntryToggles();
+  bindDiaryDelete();
+}
+
+function bindDiaryEntryToggles() {
+  document.querySelectorAll("[data-diary-toggle]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const entry = button.closest(".diary-entry");
+      const panel = entry?.querySelector("[data-diary-body-panel]");
+      if (!entry || !panel) return;
+      const expanded = button.getAttribute("aria-expanded") === "true";
+      panel.hidden = expanded;
+      button.setAttribute("aria-expanded", String(!expanded));
+      button.innerHTML = `${icon(expanded ? "eye" : "eye-off")}${expanded ? "查看内容" : "收起内容"}`;
+      entry.classList.toggle("open", !expanded);
+      if (window.lucide) window.lucide.createIcons({ strokeWidth: 1.8 });
+    });
+  });
 }
 
 function bindDiaryDelete() {
@@ -842,7 +869,7 @@ function bindDiaryDelete() {
       const entries = readDiaryEntries().filter((entry) => entry.id !== button.dataset.diaryDelete);
       writeDiaryEntries(entries);
       document.querySelector("[data-diary-list]").innerHTML = diaryEntriesMarkup();
-      bindDiaryDelete();
+      bindDiaryEntries();
       if (window.lucide) window.lucide.createIcons({ strokeWidth: 1.8 });
       try {
         await deleteDiaryEntryFromCloud(button.dataset.diaryDelete);
@@ -876,7 +903,7 @@ function bindDiarySync() {
     try {
       const entries = await pullDiaryEntriesFromCloud();
       document.querySelector("[data-diary-list]").innerHTML = diaryEntriesMarkup();
-      bindDiaryDelete();
+      bindDiaryEntries();
       refreshState();
       cloudPasswordInput.value = "";
       note.textContent = `已从云端读取 ${entries.length} 条日记。`;

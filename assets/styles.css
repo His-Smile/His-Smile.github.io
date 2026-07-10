@@ -1629,6 +1629,16 @@ svg {
   font-weight: 620;
 }
 
+.diary-entry-body {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid color-mix(in srgb, var(--line) 78%, transparent);
+}
+
+.diary-entry-body[hidden] {
+  display: none;
+}
+
 .diary-entry p {
   margin: 0;
   color: color-mix(in srgb, var(--text) 84%, var(--muted));
@@ -1636,11 +1646,18 @@ svg {
   white-space: normal;
 }
 
+.diary-entry-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 16px;
+}
+
 .text-button {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-top: 16px;
+  margin-top: 0;
   padding: 0;
   background: transparent;
   color: var(--muted);
