@@ -1673,6 +1673,30 @@ svg {
   font-size: 19px;
 }
 
+.about-copy h3,
+.about-copy h4 {
+  margin: 26px 0 10px;
+  font-family: var(--font-title);
+  font-weight: 620;
+}
+
+.about-copy ul {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0 22px;
+  padding-left: 1.2em;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.about-copy blockquote {
+  margin: 22px 0;
+  padding: 12px 16px;
+  border-left: 3px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  color: color-mix(in srgb, var(--text) 82%, var(--muted));
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+}
+
 .about-list {
   align-self: start;
 }

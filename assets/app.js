@@ -393,6 +393,78 @@ async function hydrateArticleContent(post) {
   }
 }
 
+function markdownToHtml(markdown) {
+  const lines = markdown
+    .replace(/<!--[\s\S]*?-->/g, "")
+    .split(/\r?\n/);
+  const blocks = [];
+  let paragraph = [];
+  let list = [];
+
+  const flushParagraph = () => {
+    if (!paragraph.length) return;
+    blocks.push(`<p>${escapeHtml(paragraph.join(" ").trim())}</p>`);
+    paragraph = [];
+  };
+
+  const flushList = () => {
+    if (!list.length) return;
+    blocks.push(`<ul>${list.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`);
+    list = [];
+  };
+
+  lines.forEach((rawLine) => {
+    const line = rawLine.trim();
+    if (!line) {
+      flushParagraph();
+      flushList();
+      return;
+    }
+
+    const heading = line.match(/^(#{1,3})\s+(.+)$/);
+    if (heading) {
+      flushParagraph();
+      flushList();
+      const level = Math.min(heading[1].length + 1, 4);
+      blocks.push(`<h${level}>${escapeHtml(heading[2])}</h${level}>`);
+      return;
+    }
+
+    if (line.startsWith("> ")) {
+      flushParagraph();
+      flushList();
+      blocks.push(`<blockquote>${escapeHtml(line.slice(2))}</blockquote>`);
+      return;
+    }
+
+    if (/^[-*]\s+/.test(line)) {
+      flushParagraph();
+      list.push(line.replace(/^[-*]\s+/, ""));
+      return;
+    }
+
+    paragraph.push(line);
+  });
+
+  flushParagraph();
+  flushList();
+  return blocks.join("");
+}
+
+async function hydrateAboutContent() {
+  const target = document.querySelector("[data-about-content]");
+  if (!target) return;
+  try {
+    const response = await fetch("./assets/content/about.md", { cache: "no-store" });
+    if (!response.ok) return;
+    const markdown = await response.text();
+    const visibleText = markdown.replace(/<!--[\s\S]*?-->/g, "").trim();
+    if (visibleText) target.innerHTML = markdownToHtml(markdown);
+  } catch {
+    // Keep the built-in fallback copy.
+  }
+}
+
 function renderArchive() {
   const params = new URLSearchParams(location.search);
   const activeCategory = params.get("category");
@@ -473,7 +545,7 @@ function renderAbout() {
     </section>
 
     <section class="about-layout">
-      <div class="about-copy reveal">
+      <div class="about-copy reveal" data-about-content>
         <h2>为什么叫我的情书</h2>
         <p>因为我很喜欢岩井俊二的电影《情书》。那种雪地里迟到的问候、旧书卡上的名字、没有说出口却一直留着的话，和我想做这个博客的感觉很像。</p>
         <p>这里仍然会认真记录 Java、数据库、图床、代码问题和日常开发经验。只是我希望它更像一封信，有温度，也有可以反复回看的痕迹。</p>
@@ -507,6 +579,7 @@ function renderAbout() {
       </div>
     </section>
   `);
+  hydrateAboutContent();
 }
 
 const DIARY_ACCESS_KEY = "his-smile-diary-access";
