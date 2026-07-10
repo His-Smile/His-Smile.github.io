@@ -1548,8 +1548,7 @@ svg {
   flex: 1 1 150px;
 }
 
-.diary-sync,
-.diary-password-panel {
+.diary-tools {
   display: grid;
   gap: 12px;
   margin-top: 18px;
@@ -1559,44 +1558,35 @@ svg {
   background: color-mix(in srgb, var(--surface) 72%, transparent);
 }
 
-.diary-sync > div:first-child,
-.diary-password-panel > div:first-child {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  color: var(--muted);
-  font-size: 13px;
-}
-
-.diary-sync strong,
-.diary-password-panel strong {
-  color: var(--accent);
-}
-
-.diary-sync p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.7;
-}
-
-.diary-sync label,
+.diary-cloud-pass,
 .diary-password-panel label {
   margin-top: 0;
 }
 
-.diary-sync-actions {
+.diary-tool-actions {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
 }
 
-.diary-sync-actions button,
+.diary-tool-actions button,
 .diary-password-panel button {
   width: 100%;
   min-height: 40px;
   padding-inline: 10px;
   font-size: 13px;
+}
+
+.diary-password-panel {
+  display: grid;
+  gap: 12px;
+  margin-top: 2px;
+  padding-top: 14px;
+  border-top: 1px solid color-mix(in srgb, var(--line) 72%, transparent);
+}
+
+.diary-password-panel[hidden] {
+  display: none;
 }
 
 .diary-list {
@@ -1950,7 +1940,7 @@ svg {
     display: none;
   }
 
-  .diary-sync-actions {
+  .diary-tool-actions {
     grid-template-columns: 1fr;
   }
 

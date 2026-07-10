@@ -713,39 +713,31 @@ function renderDiary() {
             <button class="primary-action" data-diary-save>${icon("send")}保存</button>
             <button class="secondary-action calm" data-diary-lock>${icon("lock")}锁上</button>
           </div>
-          <section class="diary-sync">
-            <div>
-              <span>Cloudflare D1</span>
-              <strong data-diary-sync-state>自动同步已开启</strong>
-            </div>
-            <p>云端地址和同步口令已经固定在站点里，不需要再手动填写。</p>
-            <label>
-              <span>云端读取密码</span>
-              <input type="password" data-diary-cloud-password autocomplete="off" placeholder="读取云端前输入">
+          <section class="diary-tools">
+            <label class="diary-cloud-pass">
+              <span>云端密码</span>
+              <input type="password" data-diary-cloud-password autocomplete="off" placeholder="读取前输入">
             </label>
-            <div class="diary-sync-actions">
+            <div class="diary-tool-actions">
               <button class="secondary-action calm" data-diary-cloud-pull type="button">${icon("cloud-download")}读取云端</button>
               <button class="secondary-action calm" data-diary-cloud-push type="button">${icon("cloud-upload")}上传本地</button>
+              <button class="secondary-action calm" data-diary-password-toggle type="button" aria-expanded="false">${icon("key-round")}修改密码</button>
             </div>
-          </section>
-          <section class="diary-password-panel">
-            <div>
-              <span>入口密码</span>
-              <strong>修改密码</strong>
+            <div class="diary-password-panel" data-diary-password-panel hidden>
+              <label>
+                <span>当前密码</span>
+                <input type="password" data-diary-old-password autocomplete="current-password">
+              </label>
+              <label>
+                <span>新密码</span>
+                <input type="password" data-diary-new-password autocomplete="new-password">
+              </label>
+              <label>
+                <span>确认新密码</span>
+                <input type="password" data-diary-confirm-password autocomplete="new-password">
+              </label>
+              <button class="secondary-action calm" data-diary-password-change type="button">${icon("check")}确认修改</button>
             </div>
-            <label>
-              <span>当前密码</span>
-              <input type="password" data-diary-old-password autocomplete="current-password">
-            </label>
-            <label>
-              <span>新密码</span>
-              <input type="password" data-diary-new-password autocomplete="new-password">
-            </label>
-            <label>
-              <span>确认新密码</span>
-              <input type="password" data-diary-confirm-password autocomplete="new-password">
-            </label>
-            <button class="secondary-action calm" data-diary-password-change type="button">${icon("key-round")}更新密码</button>
           </section>
           <p class="diary-note" data-diary-note></p>
         </div>
@@ -883,11 +875,6 @@ function bindDiaryDelete() {
 
 function bindDiarySync() {
   const note = document.querySelector("[data-diary-note]");
-  const state = document.querySelector("[data-diary-sync-state]");
-
-  const refreshState = () => {
-    if (state) state.textContent = diarySyncReady() ? "自动同步已开启" : "本地保存";
-  };
 
   document.querySelector("[data-diary-cloud-pull]")?.addEventListener("click", async () => {
     const cloudPasswordInput = document.querySelector("[data-diary-cloud-password]");
@@ -904,7 +891,6 @@ function bindDiarySync() {
       const entries = await pullDiaryEntriesFromCloud();
       document.querySelector("[data-diary-list]").innerHTML = diaryEntriesMarkup();
       bindDiaryEntries();
-      refreshState();
       cloudPasswordInput.value = "";
       note.textContent = `已从云端读取 ${entries.length} 条日记。`;
       if (window.lucide) window.lucide.createIcons({ strokeWidth: 1.8 });
@@ -917,7 +903,6 @@ function bindDiarySync() {
     note.textContent = "正在上传本地日记...";
     try {
       const count = await pushDiaryEntriesToCloud();
-      refreshState();
       note.textContent = `已上传 ${count} 条本地日记。`;
     } catch {
       note.textContent = "上传失败。稍后再试。";
@@ -926,6 +911,18 @@ function bindDiarySync() {
 }
 
 function bindDiaryPasswordChange() {
+  document.querySelector("[data-diary-password-toggle]")?.addEventListener("click", () => {
+    const panel = document.querySelector("[data-diary-password-panel]");
+    const toggle = document.querySelector("[data-diary-password-toggle]");
+    if (!panel || !toggle) return;
+    const expanded = toggle.getAttribute("aria-expanded") === "true";
+    panel.hidden = expanded;
+    toggle.setAttribute("aria-expanded", String(!expanded));
+    toggle.innerHTML = `${icon(expanded ? "key-round" : "x")}${expanded ? "修改密码" : "收起"}`;
+    if (!expanded) document.querySelector("[data-diary-old-password]")?.focus();
+    if (window.lucide) window.lucide.createIcons({ strokeWidth: 1.8 });
+  });
+
   document.querySelector("[data-diary-password-change]")?.addEventListener("click", async () => {
     const oldInput = document.querySelector("[data-diary-old-password]");
     const newInput = document.querySelector("[data-diary-new-password]");
@@ -956,7 +953,14 @@ function bindDiaryPasswordChange() {
     oldInput.value = "";
     newInput.value = "";
     confirmInput.value = "";
+    document.querySelector("[data-diary-password-panel]").hidden = true;
+    const toggle = document.querySelector("[data-diary-password-toggle]");
+    if (toggle) {
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.innerHTML = `${icon("key-round")}修改密码`;
+    }
     note.textContent = "密码已更新。下次进入日记时使用新密码。";
+    if (window.lucide) window.lucide.createIcons({ strokeWidth: 1.8 });
   });
 }
 
